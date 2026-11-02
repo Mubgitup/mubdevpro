@@ -52,3 +52,4 @@ export const PROJECTS = [
     badge: 'Course Project'
   }
 ];
+

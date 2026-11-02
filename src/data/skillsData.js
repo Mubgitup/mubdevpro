@@ -94,3 +94,4 @@ export const SKILL_CATEGORIES = [
     ]
   }
 ];
+

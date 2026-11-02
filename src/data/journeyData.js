@@ -41,3 +41,4 @@ export const JOURNEY_MILESTONES = [
     highlights: ['Responsive web design', 'Vanilla JavaScript & DOM manipulation', 'Modern CSS layout models']
   }
 ];
+

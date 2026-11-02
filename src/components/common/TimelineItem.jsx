@@ -60,3 +60,4 @@ export const TimelineItem = ({ milestone }) => {
 };
 
 export default TimelineItem;
+

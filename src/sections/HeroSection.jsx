@@ -1,39 +1,74 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '../components/common/Button';
 import { BRAND_PROFILE, ASSET_PATHS } from '../data/brandConfig';
 import { GraduationCap, Code2, Compass, ArrowRight, Mail, Sparkles, Terminal } from 'lucide-react';
 
 export const HeroSection = () => {
+  // Staggered entrance animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
+  const portraitVariants = {
+    hidden: { opacity: 0, scale: 0.94 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.25 }
+    }
+  };
+
   return (
     <section className="section-container hero-wrapper" id="hero">
       {/* --- Main 2-Column Hero Grid --- */}
-      <div className="hero-main-grid">
-        
+      <motion.div
+        className="hero-main-grid"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Left Column: Profile, Headings & Actions */}
         <div className="hero-left-content">
           {/* Student Status Badge */}
-          <div className="badge" style={{ marginBottom: '0.75rem' }}>
+          <motion.div variants={itemVariants} className="badge" style={{ marginBottom: '0.75rem' }}>
             <span className="badge-dot" />
             <span>Software Engineering Student</span>
-          </div>
+          </motion.div>
 
           {/* Name Heading */}
-          <h1 className="hero-heading">
+          <motion.h1 variants={itemVariants} className="hero-heading">
             {BRAND_PROFILE.name}
-          </h1>
+          </motion.h1>
 
           {/* Role Title */}
-          <div className="hero-role-title">
+          <motion.div variants={itemVariants} className="hero-role-title">
             Aspiring <span className="gradient-text">Full-Stack Developer</span>
-          </div>
+          </motion.div>
 
           {/* Introduction Paragraph */}
-          <p className="hero-intro">
+          <motion.p variants={itemVariants} className="hero-intro">
             {BRAND_PROFILE.heroDescription}
-          </p>
+          </motion.p>
 
           {/* CTA Actions */}
-          <div className="hero-actions">
+          <motion.div variants={itemVariants} className="hero-actions">
             <Button
               variant="primary"
               size="lg"
@@ -52,46 +87,56 @@ export const HeroSection = () => {
             >
               Contact Me
             </Button>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Right Column: Hero Portrait & Floating Tech Elements */}
-        <div className="hero-portrait-container">
-          {/* Floating Element 1: React & Frontend */}
-          <div className="floating-chip floating-chip-1">
-            <Code2 size={16} color="var(--color-neon-cyan)" />
-            <span>React & Frontend</span>
+        {/* Right Column: Seamless Integrated Portrait Stage */}
+        <motion.div className="hero-portrait-container" variants={portraitVariants}>
+          <div className="hero-portrait-stage">
+            {/* Orbital Cyber Rings Decoration */}
+            <div className="hero-orbit-ring" aria-hidden="true" />
+            <div className="hero-orbit-ring-secondary" aria-hidden="true" />
+
+            {/* Floating Element 1: React & Frontend */}
+            <div className="floating-chip floating-chip-1">
+              <Code2 size={16} color="var(--color-neon-cyan)" />
+              <span>React & Frontend</span>
+            </div>
+
+            {/* Floating Element 2: Python & Django */}
+            <div className="floating-chip floating-chip-2">
+              <Terminal size={16} color="var(--color-electric-blue)" />
+              <span>Python & Django</span>
+            </div>
+
+            {/* Floating Element 3: Full-Stack Architecture */}
+            <div className="floating-chip floating-chip-3">
+              <Sparkles size={16} color="var(--color-violet)" />
+              <span>Full-Stack Engineering</span>
+            </div>
+
+            {/* Seamless, Borderless Blended Portrait Asset */}
+            <div className="hero-portrait-blended">
+              <img
+                src={ASSET_PATHS.placeholderPortrait}
+                alt="Mubarek Hussein - Mubdev Replaceable Portrait Asset"
+                className="hero-portrait-img"
+                width="480"
+                height="580"
+                loading="eager"
+              />
+            </div>
           </div>
+        </motion.div>
+      </motion.div>
 
-          {/* Floating Element 2: Python & Django */}
-          <div className="floating-chip floating-chip-2">
-            <Terminal size={16} color="var(--color-electric-blue)" />
-            <span>Python & Django</span>
-          </div>
-
-          {/* Floating Element 3: Full-Stack Architecture */}
-          <div className="floating-chip floating-chip-3">
-            <Sparkles size={16} color="var(--color-violet)" />
-            <span>Full-Stack Engineering</span>
-          </div>
-
-          {/* Integrated Replaceable Portrait Frame */}
-          <div className="hero-portrait-frame">
-            <img
-              src={ASSET_PATHS.placeholderPortrait}
-              alt="Mubarek Hussein - Mubdev Replaceable Portrait Slot"
-              className="hero-portrait-img"
-              width="480"
-              height="580"
-              loading="eager"
-            />
-          </div>
-        </div>
-
-      </div>
-
-      {/* --- Bottom Information Blocks --- */}
-      <div className="hero-bottom-grid">
+      {/* --- Bottom Information Blocks with Scroll-Triggered Reveal --- */}
+      <motion.div
+        className="hero-bottom-grid"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      >
         {/* Block 1 */}
         <div className="hero-info-card">
           <div className="hero-info-icon-box">
@@ -124,7 +169,7 @@ export const HeroSection = () => {
             <div className="hero-info-sub">Continuous Skill Expansion</div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

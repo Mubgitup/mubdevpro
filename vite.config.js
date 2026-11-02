@@ -7,6 +7,17 @@ export default defineConfig({
   server: {
     port: 3000,
     open: false
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          motion: ['framer-motion'],
+          lucide: ['lucide-react']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600
   }
 });
-

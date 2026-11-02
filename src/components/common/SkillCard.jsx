@@ -39,3 +39,4 @@ export const SkillCard = ({ category }) => {
 };
 
 export default SkillCard;
+
