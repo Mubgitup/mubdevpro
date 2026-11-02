@@ -1,0 +1,146 @@
+@import './variables.css';
+
+/* ==========================================================================
+   MUBDEV GLOBAL STYLES & RESET
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-midnight);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* --- Futuristic Ambient Background System --- */
+.mub-background-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.mub-background-glow::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  left: 20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(8, 123, 255, 0.18) 0%, rgba(2, 8, 23, 0) 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.mub-background-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(113, 59, 255, 0.15) 0%, rgba(2, 8, 23, 0) 70%);
+  border-radius: 50%;
+  filter: blur(90px);
+}
+
+/* Subtle digital grid backdrop */
+.mub-grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Selection Styling --- */
+::selection {
+  background-color: rgba(0, 217, 255, 0.25);
+  color: #00D9FF;
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-midnight);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(8, 123, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon-cyan);
+}
+
+/* --- Typography Defaults --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2rem, 5vw, var(--text-5xl)); }
+h2 { font-size: clamp(1.75rem, 4vw, var(--text-4xl)); }
+h3 { font-size: clamp(1.35rem, 3vw, var(--text-3xl)); }
+h4 { font-size: var(--text-2xl); }
+h5 { font-size: var(--text-xl); }
+h6 { font-size: var(--text-lg); }
+
+p {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-md);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--color-neon-cyan);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-white);
+  text-shadow: var(--glow-cyan-sm);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+}

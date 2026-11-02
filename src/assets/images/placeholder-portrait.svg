@@ -1,0 +1,59 @@
+<svg width="480" height="580" viewBox="0 0 480 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="frame-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="50%" stop-color="#087BFF" />
+      <stop offset="100%" stop-color="#713BFF" />
+    </linearGradient>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#071B3D" />
+      <stop offset="100%" stop-color="#020817" />
+    </linearGradient>
+    <filter id="p-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Ambient Glow Behind Frame -->
+  <rect x="25" y="25" width="430" height="530" rx="28" fill="none" stroke="url(#frame-grad)" stroke-width="4" filter="url(#p-glow)" opacity="0.4" />
+
+  <!-- Main Card Surface -->
+  <rect x="25" y="25" width="430" height="530" rx="28" fill="url(#bg-grad)" stroke="url(#frame-grad)" stroke-width="2" />
+
+  <!-- Tech Grid Background Pattern -->
+  <g opacity="0.15">
+    <line x1="25" y1="120" x2="455" y2="120" stroke="#00D9FF" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="25" y1="220" x2="455" y2="220" stroke="#00D9FF" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="25" y1="320" x2="455" y2="320" stroke="#00D9FF" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="25" y1="420" x2="455" y2="420" stroke="#00D9FF" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="120" y1="25" x2="120" y2="555" stroke="#087BFF" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="240" y1="25" x2="240" y2="555" stroke="#087BFF" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="360" y1="25" x2="360" y2="555" stroke="#087BFF" stroke-width="1" stroke-dasharray="4 4" />
+  </g>
+
+  <!-- Cyber Tech Silhouette (Head & Shoulders Outline) -->
+  <g transform="translate(140, 110)">
+    <!-- Halo ring -->
+    <circle cx="100" cy="100" r="95" stroke="url(#frame-grad)" stroke-width="2" stroke-dasharray="6 6" opacity="0.4" />
+    <circle cx="100" cy="100" r="75" fill="rgba(8, 123, 255, 0.08)" stroke="rgba(0, 217, 255, 0.3)" stroke-width="1.5" />
+    
+    <!-- Head -->
+    <circle cx="100" cy="85" r="45" fill="rgba(245, 248, 255, 0.08)" stroke="rgba(0, 217, 255, 0.5)" stroke-width="2" />
+    
+    <!-- Shoulders -->
+    <path d="M 30,195 C 30,140 70,145 100,145 C 130,145 170,140 170,195" fill="rgba(245, 248, 255, 0.06)" stroke="rgba(0, 217, 255, 0.4)" stroke-width="2" />
+  </g>
+
+  <!-- Replaceable Badge Indicator -->
+  <g transform="translate(60, 390)">
+    <rect width="360" height="52" rx="26" fill="rgba(7, 27, 61, 0.85)" stroke="rgba(0, 217, 255, 0.4)" stroke-width="1.5" />
+    <circle cx="28" cy="26" r="6" fill="#00D9FF" />
+    <text x="46" y="27" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="12" fill="#00D9FF" letter-spacing="1">TEMPORARY PORTRAIT ASSET</text>
+    <text x="46" y="42" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" fill="rgba(245, 248, 255, 0.7)">Replace with Mubarek Hussein's official photo</text>
+  </g>
+
+  <!-- Tech Metadata Stamp -->
+  <text x="240" y="495" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="rgba(245, 248, 255, 0.4)" letter-spacing="2">ASSET_ID: HERO_PORTRAIT_PLACEHOLDER</text>
+  <text x="240" y="515" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="rgba(0, 217, 255, 0.4)" letter-spacing="1">FORMAT: 480 x 580 | REPLACEABLE ASSET</text>
+</svg>

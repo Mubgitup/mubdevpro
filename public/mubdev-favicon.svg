@@ -1,0 +1,19 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mubdev-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF" />
+      <stop offset="50%" stop-color="#087BFF" />
+      <stop offset="100%" stop-color="#713BFF" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="#020817" />
+  <rect width="100" height="100" rx="22" stroke="rgba(0, 217, 255, 0.25)" stroke-width="1.5" />
+  <polygon points="22,76 22,30 50,56 78,30 78,76 65,76 65,48 50,62 35,48 35,76" fill="none" stroke="url(#mubdev-grad)" stroke-width="6.5" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)" />
+  <polygon points="50,30 55,37 50,44 45,37" fill="#00D9FF" />
+  <circle cx="22" cy="30" r="3.5" fill="#00D9FF" />
+  <circle cx="78" cy="30" r="3.5" fill="#713BFF" />
+</svg>
