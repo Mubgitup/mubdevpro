@@ -1,6 +1,6 @@
 /**
  * Mubdev Brand Configuration & Profile Data
- * Source of truth for brand metadata, profile, and design tokens
+ * Source of truth for brand metadata, profile, navigation, and social links
  */
 
 export const BRAND_PROFILE = {
@@ -9,18 +9,16 @@ export const BRAND_PROFILE = {
   role: 'Software Engineering Student & Aspiring Full-Stack Developer',
   education: {
     degree: 'Software Engineering',
-    year: 'Third-year Student',
+    year: 'Third-year Student (3rd Year)',
     university: 'Haramaya University'
   },
   professionalDirection: 'Aspiring Full-Stack Developer',
-  technologies: [
-    { name: 'HTML5', category: 'Frontend' },
-    { name: 'CSS3', category: 'Frontend' },
-    { name: 'JavaScript', category: 'Frontend' },
-    { name: 'React', category: 'Frontend' },
-    { name: 'Python', category: 'Backend' },
-    { name: 'C++', category: 'Systems' },
-    { name: 'PHP', category: 'Backend', note: 'Currently learning' }
+  bio: 'Third-year Software Engineering student at Haramaya University with a strong drive for building scalable web applications and mastering full-stack software development.',
+  heroDescription: 'Passionate about bridging frontend aesthetics with robust backend systems. Currently expanding expertise across React, Python, Django, C++, and PHP to build reliable, high-performance digital products.',
+  heroHighlights: [
+    { title: 'Haramaya University', subtitle: '3rd Year Software Engineering', icon: 'GraduationCap' },
+    { title: 'Web Development & Programming', subtitle: 'Frontend, Backend & Systems', icon: 'Code' },
+    { title: 'Always Learning & Exploring', subtitle: 'Continuous Technical Growth', icon: 'Compass' }
   ]
 };
 
@@ -34,11 +32,27 @@ export const BRAND_COLORS = {
 };
 
 export const NAV_LINKS = [
-  { label: 'Overview', href: '#overview' },
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Home', href: '#hero', id: 'hero' },
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Skills', href: '#skills', id: 'skills' },
+  { label: 'Projects', href: '#projects', id: 'projects' },
+  { label: 'Journey', href: '#journey', id: 'journey' },
+  { label: 'Contact', href: '#contact', id: 'contact' }
+];
+
+export const SOCIAL_LINKS = [
+  {
+    name: 'GitHub',
+    url: 'https://github.com', // Placeholder until user provides official profile URL
+    icon: 'Github',
+    isPlaceholder: true
+  },
+  {
+    name: 'LinkedIn',
+    url: 'https://linkedin.com', // Placeholder until user provides official profile URL
+    icon: 'Linkedin',
+    isPlaceholder: true
+  }
 ];
 
 export const ASSET_PATHS = {

@@ -35,3 +35,4 @@
 - `.section-container`, `.section-header`
 - `.gradient-text`, `.neon-highlight`, `.accent-text`
 - `.badge`, `.badge-dot`
+

@@ -20,3 +20,4 @@
   <!-- Text -->
   <text x="65" y="38" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="28" fill="#F5F8FF" letter-spacing="1">MUB<tspan fill="#00D9FF" filter="url(#logo-glow)">DEV</tspan></text>
 </svg>
+

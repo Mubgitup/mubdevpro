@@ -22,3 +22,4 @@ Please place the authoritative homepage screenshot in this folder:
 
 ### Notes
 - Any future design decisions, section layouts, and component proportions will be audited against this reference image once provided.
+
