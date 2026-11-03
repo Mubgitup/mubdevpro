@@ -7,11 +7,16 @@ import { LightTrails } from '../effects/LightTrails';
 /**
  * Core Application Layout
  * Provides 3D Three.js technology background, flowing light trails,
- * glassmorphic navigation, and footer shell.
+ * accessible skip link, glassmorphic navigation, and footer shell.
  */
 export const Layout = ({ children }) => {
   return (
     <div className="app-layout">
+      {/* Accessibility Skip Link */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       {/* 3D Three.js Ambient Tech Background */}
       <ThreeBackground />
 
@@ -25,7 +30,7 @@ export const Layout = ({ children }) => {
       <Navbar />
 
       {/* Main Page Content */}
-      <main className="main-content">
+      <main id="main-content" className="main-content" tabIndex={-1}>
         {children}
       </main>
 

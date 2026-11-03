@@ -6,3 +6,4 @@ app_name = 'contact'
 urlpatterns = [
     path('', ContactMessageCreateView.as_view(), name='contact-submit'),
 ]
+

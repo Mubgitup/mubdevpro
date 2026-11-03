@@ -22,3 +22,4 @@ urlpatterns = [
     path('api/health/', health_check, name='health-check'),
     path('api/contact/', include('contact.urls')),
 ]
+

@@ -73,3 +73,4 @@ To configure a production or staging MySQL database:
 
 ## 5. Migration History
 - `0001_initial`: Created initial model `ContactMessage` with table `mubdev_contact_messages`, constraints, and composite indexes.
+

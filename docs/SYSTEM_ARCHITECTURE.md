@@ -102,3 +102,4 @@ mubdevpro/
 4. **Fault Tolerance & Fallback**:
    - If MySQL credentials are not yet configured on a developer machine, the system falls back gracefully to `django.db.backends.sqlite3` without crashing.
    - Switching to MySQL requires only updating `DB_ENGINE=django.db.backends.mysql` in `backend/.env`.
+

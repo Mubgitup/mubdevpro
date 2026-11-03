@@ -9,3 +9,4 @@ class ContactMessageAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'ip_address')
     ordering = ('-created_at',)
     list_editable = ('is_read',)
+

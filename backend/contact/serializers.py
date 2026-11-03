@@ -56,3 +56,4 @@ class ContactMessageSerializer(serializers.ModelSerializer):
         if honeypot:
             raise serializers.ValidationError({"spam": "Automated submission detected."})
         return attrs
+

@@ -29,6 +29,34 @@ body {
   position: relative;
 }
 
+/* --- High-Contrast Accessible Focus Indicators --- */
+:focus-visible {
+  outline: 2px solid var(--color-neon-cyan);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* --- Skip to Content Link (Accessibility) --- */
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 1rem;
+  background: var(--color-midnight);
+  color: var(--color-neon-cyan);
+  padding: 0.6rem 1.2rem;
+  z-index: 1000;
+  border: 1px solid var(--color-neon-cyan);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
 /* --- Futuristic Ambient Background System --- */
 .mub-background-glow {
   position: fixed;
@@ -144,4 +172,3 @@ a:hover {
 code, pre {
   font-family: var(--font-mono);
 }
-

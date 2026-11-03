@@ -73,3 +73,4 @@ class ContactAPITests(TestCase):
         response = self.client.get(health_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], 'healthy')
+

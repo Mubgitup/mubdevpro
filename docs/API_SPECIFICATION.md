@@ -115,3 +115,4 @@ Returned when an unhandled server or database error occurs. Internal stack trace
   "message": "An unexpected error occurred while processing your message. Please try again later."
 }
 ```
+
