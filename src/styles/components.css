@@ -317,6 +317,29 @@
   gap: var(--space-xs);
 }
 
+.mobile-nav-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid rgba(0, 217, 255, 0.18);
+}
+
+.mobile-nav-socials-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.mobile-socials-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 /* ==========================================================================
    HERO SECTION & SEAMLESS PORTRAIT INTEGRATION
    Organic blending, glowing atmospheric halo, no rectangular box card
@@ -909,6 +932,109 @@
   color: var(--color-neon-cyan);
 }
 
+/* --- Social Media Cards in Contact Section --- */
+.contact-social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.contact-social-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(2, 8, 23, 0.55);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  color: var(--color-white);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+}
+
+.contact-social-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.08) 0%, rgba(113, 59, 255, 0.08) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  pointer-events: none;
+}
+
+.contact-social-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-neon-cyan);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), var(--glow-cyan-sm);
+}
+
+.contact-social-card:hover::before {
+  opacity: 1;
+}
+
+.contact-social-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: rgba(7, 27, 61, 0.85);
+  border: 1px solid rgba(0, 217, 255, 0.28);
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.contact-social-card:hover .contact-social-icon-wrapper {
+  transform: scale(1.08);
+  border-color: var(--color-neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
+}
+
+.contact-social-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.contact-social-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+.contact-social-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: 0.01em;
+}
+
+.contact-social-ext {
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.contact-social-card:hover .contact-social-ext {
+  color: var(--color-neon-cyan);
+  transform: translate(1px, -1px);
+}
+
+.contact-social-handle {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ==========================================================================
    LIGHT TRAILS & CSS FALLBACK ANIMATIONS
    ========================================================================== */
@@ -1107,6 +1233,10 @@
 @media (max-width: 480px) {
   .hero-heading {
     font-size: 2.25rem;
+  }
+
+  .contact-social-grid {
+    grid-template-columns: 1fr;
   }
 
   .floating-chip {

@@ -3,7 +3,9 @@ import { SectionHeader } from '../components/common/SectionHeader';
 import { GlassCard } from '../components/common/GlassCard';
 import { Button } from '../components/common/Button';
 import { MotionReveal } from '../components/common/MotionReveal';
-import { Mail, Send, AlertCircle, CheckCircle2, Loader2, Database, ShieldCheck } from 'lucide-react';
+import { SocialIcon } from '../components/common/SocialIcon';
+import { SOCIAL_LINKS } from '../data/brandConfig';
+import { Mail, Send, AlertCircle, CheckCircle2, Loader2, Database, ShieldCheck, Share2, ExternalLink } from 'lucide-react';
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -135,69 +137,111 @@ export const ContactSection = () => {
       </MotionReveal>
 
       <div className="contact-grid">
-        {/* Left Column: Direct Info & Backend Status Notice */}
+        {/* Left Column: Direct Info, Social Media Cards & Backend Status */}
         <MotionReveal direction="up" delay={0.2}>
-          <GlassCard variant="default" glowColor="cyan">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-              <Mail size={22} color="var(--color-neon-cyan)" />
-              <h3 style={{ fontSize: 'var(--text-xl)' }}>Direct Communication</h3>
-            </div>
-
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-              I am always eager to discuss software engineering, web application development, 
-              academic collaboration, and technology projects.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div className="badge" style={{ padding: '0.4rem 0.6rem' }}>
-                  <span className="badge-dot" />
-                  <span>Status</span>
-                </div>
-                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-white)' }}>
-                  Active Student • Open to Engineering Inquiries
-                </span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)' }}>
+            <GlassCard variant="default" glowColor="cyan">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                <Mail size={22} color="var(--color-neon-cyan)" />
+                <h3 style={{ fontSize: 'var(--text-xl)' }}>Direct Communication</h3>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div className="badge badge-violet" style={{ padding: '0.4rem 0.6rem' }}>
-                  <span className="badge-dot" />
-                  <span>Location</span>
-                </div>
-                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-white)' }}>
-                  Haramaya University, Ethiopia
-                </span>
-              </div>
-            </div>
-
-            {/* Architecture Live Integration Details */}
-            <div
-              style={{
-                padding: '1.15rem',
-                borderRadius: 'var(--radius-sm)',
-                background: 'rgba(2, 8, 23, 0.65)',
-                border: '1px solid rgba(0, 217, 255, 0.25)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.65rem'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-neon-cyan)', fontSize: 'var(--text-xs)', fontWeight: 600 }}>
-                <Database size={16} />
-                <span>Full-Stack Integration Architecture</span>
-              </div>
-
-              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>
-                Submissions are sent directly to the Django REST Framework API (<code style={{ color: 'var(--color-neon-cyan)' }}>/api/contact/</code>), 
-                sanitized, validated against strict RFC constraints, and stored in the MySQL database table <code style={{ color: 'var(--color-neon-cyan)' }}>mubdev_contact_messages</code>.
+              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                I am always eager to discuss software engineering, web application development, 
+                academic collaboration, and technology projects.
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.7rem' }}>
-                <ShieldCheck size={14} color="#00D9FF" />
-                <span>Includes anti-spam honeypot and rate-limiting protection.</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div className="badge" style={{ padding: '0.4rem 0.6rem' }}>
+                    <span className="badge-dot" />
+                    <span>Status</span>
+                  </div>
+                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-white)' }}>
+                    Active Student • Open to Engineering Inquiries
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div className="badge badge-violet" style={{ padding: '0.4rem 0.6rem' }}>
+                    <span className="badge-dot" />
+                    <span>Location</span>
+                  </div>
+                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-white)' }}>
+                    Haramaya University, Ethiopia
+                  </span>
+                </div>
               </div>
-            </div>
-          </GlassCard>
+
+              {/* Architecture Live Integration Details */}
+              <div
+                style={{
+                  padding: '1.15rem',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'rgba(2, 8, 23, 0.65)',
+                  border: '1px solid rgba(0, 217, 255, 0.25)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.65rem'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-neon-cyan)', fontSize: 'var(--text-xs)', fontWeight: 600 }}>
+                  <Database size={16} />
+                  <span>Full-Stack Integration Architecture</span>
+                </div>
+
+                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>
+                  Submissions are sent directly to the Django REST Framework API (<code style={{ color: 'var(--color-neon-cyan)' }}>/api/contact/</code>), 
+                  sanitized, validated against strict RFC constraints, and stored in the MySQL database table <code style={{ color: 'var(--color-neon-cyan)' }}>mubdev_contact_messages</code>.
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.7rem' }}>
+                  <ShieldCheck size={14} color="#00D9FF" />
+                  <span>Includes anti-spam honeypot and rate-limiting protection.</span>
+                </div>
+              </div>
+            </GlassCard>
+
+            {/* Dedicated Social Media Connection Card */}
+            <GlassCard variant="default" glowColor="violet">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <Share2 size={20} color="var(--color-neon-cyan)" />
+                  <h3 style={{ fontSize: 'var(--text-lg)', margin: 0 }}>Social Media & Channels</h3>
+                </div>
+                <span className="badge badge-violet" style={{ fontSize: '0.65rem' }}>Connect Directly</span>
+              </div>
+
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+                Connect with me across platforms to follow my engineering projects, open-source code, and developer updates:
+              </p>
+
+              <div className="contact-social-grid">
+                {SOCIAL_LINKS.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-social-card"
+                    title={`Connect on ${social.name}`}
+                    aria-label={`Visit Mubdev on ${social.name} (opens in new tab)`}
+                  >
+                    <div className="contact-social-icon-wrapper" style={{ color: social.accentColor }}>
+                      <SocialIcon name={social.id} size={20} />
+                    </div>
+                    <div className="contact-social-content">
+                      <div className="contact-social-header">
+                        <span className="contact-social-name">{social.name}</span>
+                        <ExternalLink size={12} className="contact-social-ext" />
+                      </div>
+                      <span className="contact-social-handle">{social.username}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </GlassCard>
+          </div>
         </MotionReveal>
 
         {/* Right Column: Contact Form */}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { MubdevLogo } from '../../assets/logo/MubdevLogo';
+import { SocialIcon } from '../common/SocialIcon';
 import { BRAND_PROFILE, NAV_LINKS, SOCIAL_LINKS } from '../../data/brandConfig';
-import { Github, Linkedin, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -54,23 +55,20 @@ export const Footer = () => {
           </div>
 
           {/* Social Links */}
-          <div style={{ display: 'flex', gap: '0.65rem' }}>
-            {SOCIAL_LINKS.map((social) => {
-              const Icon = social.icon === 'Github' ? Github : Linkedin;
-              return (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="icon-btn"
-                  title={`${social.name} (Placeholder)`}
-                  aria-label={`${social.name} profile`}
-                >
-                  <Icon size={16} />
-                </a>
-              );
-            })}
+          <div className="footer-social-row" style={{ display: 'flex', gap: '0.65rem' }}>
+            {SOCIAL_LINKS.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-btn"
+                title={`${social.name} (${social.username})`}
+                aria-label={`${social.name} profile (opens in new tab)`}
+              >
+                <SocialIcon name={social.id} size={16} />
+              </a>
+            ))}
           </div>
         </div>
 

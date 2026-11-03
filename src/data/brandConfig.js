@@ -40,20 +40,7 @@ export const NAV_LINKS = [
   { label: 'Contact', href: '#contact', id: 'contact' }
 ];
 
-export const SOCIAL_LINKS = [
-  {
-    name: 'GitHub',
-    url: 'https://github.com', // Placeholder until user provides official profile URL
-    icon: 'Github',
-    isPlaceholder: true
-  },
-  {
-    name: 'LinkedIn',
-    url: 'https://linkedin.com', // Placeholder until user provides official profile URL
-    icon: 'Linkedin',
-    isPlaceholder: true
-  }
-];
+export { SOCIAL_LINKS } from './socialLinks';
 
 export const ASSET_PATHS = {
   logoSvg: '/src/assets/logo/mubdev-logo.svg',

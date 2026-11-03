@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MubdevLogo } from '../../assets/logo/MubdevLogo';
 import { Button } from '../common/Button';
+import { SocialIcon } from '../common/SocialIcon';
 import { NAV_LINKS, SOCIAL_LINKS } from '../../data/brandConfig';
-import { Menu, X, Github, Linkedin, Sparkles } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -111,22 +112,19 @@ export const Navbar = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           {/* Social Links (Desktop) */}
           <div className="nav-socials">
-            {SOCIAL_LINKS.map((social) => {
-              const Icon = social.icon === 'Github' ? Github : Linkedin;
-              return (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="icon-btn"
-                  title={`${social.name} (Placeholder link)`}
-                  aria-label={`${social.name} profile`}
-                >
-                  <Icon size={16} />
-                </a>
-              );
-            })}
+            {SOCIAL_LINKS.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-btn"
+                title={`${social.name} profile (${social.username})`}
+                aria-label={`${social.name} profile (opens in new tab)`}
+              >
+                <SocialIcon name={social.id} size={16} />
+              </a>
+            ))}
           </div>
 
           {/* Connect Action Button */}
@@ -196,10 +194,10 @@ export const Navbar = () => {
           ))}
 
           {/* Social Links (Mobile Drawer) */}
-          <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '0.5rem', borderTop: '1px solid rgba(0, 217, 255, 0.15)' }}>
-            {SOCIAL_LINKS.map((social) => {
-              const Icon = social.icon === 'Github' ? Github : Linkedin;
-              return (
+          <div className="mobile-nav-socials">
+            <span className="mobile-nav-socials-label">Connect Online</span>
+            <div className="mobile-socials-row">
+              {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.name}
                   href={social.url}
@@ -207,11 +205,12 @@ export const Navbar = () => {
                   rel="noopener noreferrer"
                   className="icon-btn"
                   title={`${social.name} profile`}
+                  aria-label={`${social.name} profile (opens in new tab)`}
                 >
-                  <Icon size={16} />
+                  <SocialIcon name={social.id} size={16} />
                 </a>
-              );
-            })}
+              ))}
+            </div>
           </div>
 
           <Button
