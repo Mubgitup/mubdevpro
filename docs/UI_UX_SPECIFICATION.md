@@ -65,3 +65,4 @@ The **Mubdev** design system is crafted to project an immersive, high-tech, and 
 | **Standard Desktop** | `1024px - 1280px`| Container padding `2rem`, 2-column hero, full navigation links and social icons. |
 | **Tablet** | `768px - 1023px` | Single-column hero with portrait stacked above heading, about grid collapses to 1 column. |
 | **Mobile** | `<= 767px` | Navbar switches to hamburger with full-screen glass drawer, hero orbital rings hidden for performance, particle count scaled down to 80. |
+

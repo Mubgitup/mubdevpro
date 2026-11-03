@@ -56,3 +56,4 @@ This document defines the product requirements, user personas, operational scope
 - **Performance**: Initial frontend bundle split into isolated vendor chunks (`three`, `motion`, `lucide`, `index`) to maximize caching and minimize Time to Interactive (TTI).
 - **Accessibility**: High-contrast `:focus-visible` rings, semantic HTML landmarks (`<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`), skip-to-content anchor, and ARIA labels.
 - **Security**: Strict CORS policy, HTML input sanitization, zero hardcoded credentials, and suppression of backend stack traces.
+

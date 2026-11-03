@@ -67,3 +67,4 @@ Nginx Web Server (:80 / :443)
 - 3D canvas must detect WebGL availability; if unavailable, the system renders an animated CSS fallback.
 - The 3D render loop must hook into the Page Visibility API (`document.visibilityState`) to pause when the tab is backgrounded.
 - The 3D render loop and Framer Motion animations must respect user's `prefers-reduced-motion` settings.
+

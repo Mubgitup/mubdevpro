@@ -65,3 +65,4 @@ services:
 volumes:
   mysql_data:
   static_volume:
+

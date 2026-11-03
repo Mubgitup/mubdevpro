@@ -56,3 +56,4 @@
 | **Boxed Hero Portrait Card** | Seamless Borderless Masked Stage | Per Phase 3 requirement: *"Do not add a rectangular portrait card... Enhance its integration through natural gradient blending."* Replaced with organic radial mask and ambient backlighting. |
 | **Direct MySQL Hard Requirement** | MySQL Target with SQLite Development Fallback | Ensures developers and automated CI environments can run unit tests instantly without needing an external live MySQL daemon active on localhost. |
 | **Monolithic JS Bundle** | Rollup `manualChunks` Code Splitting | Three.js (532 kB) and Framer Motion (133 kB) split into isolated vendor chunks to optimize browser caching and improve initial page load performance. |
+
