@@ -3,25 +3,29 @@ import { SectionHeader } from '../components/common/SectionHeader';
 import { GlassCard } from '../components/common/GlassCard';
 import { Button } from '../components/common/Button';
 import { MotionReveal } from '../components/common/MotionReveal';
-import { Mail, Send, AlertCircle, CheckCircle2, Loader2, Info } from 'lucide-react';
+import { Mail, Send, AlertCircle, CheckCircle2, Loader2, Database, ShieldCheck } from 'lucide-react';
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
+    website: '' // Anti-spam honeypot
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'validated' | 'error'
+  const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'success' | 'error' | 'network_error'
+  const [statusMessage, setStatusMessage] = useState('');
 
-  const validate = () => {
+  const validateClient = () => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
       newErrors.name = 'Full name is required.';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters.';
     }
 
     if (!formData.email.trim()) {
@@ -32,6 +36,8 @@ export const ContactSection = () => {
 
     if (!formData.subject.trim()) {
       newErrors.subject = 'Subject line is required.';
+    } else if (formData.subject.trim().length < 3) {
+      newErrors.subject = 'Subject must be at least 3 characters.';
     }
 
     if (!formData.message.trim()) {
@@ -48,28 +54,73 @@ export const ContactSection = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear individual field error on change
+    // Clear field-level error on input change
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validate()) {
+    if (!validateClient()) {
       setSubmissionStatus('error');
+      setStatusMessage('Please correct the highlighted field errors before submitting.');
       return;
     }
 
     setIsSubmitting(true);
     setSubmissionStatus(null);
+    setStatusMessage('');
 
-    // Simulate validation and payload readiness for future Django REST API endpoint
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        // Confirmed backend persistence
+        setSubmissionStatus('success');
+        setStatusMessage(data.message || 'Your message has been safely stored in the database.');
+        // Reset form fields
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+          website: ''
+        });
+        setErrors({});
+      } else {
+        // Backend validation errors
+        setSubmissionStatus('error');
+        setStatusMessage(data.message || 'Validation failed on server. Please check your inputs.');
+
+        if (data.errors && typeof data.errors === 'object') {
+          const serverErrors = {};
+          Object.keys(data.errors).forEach((key) => {
+            const errVal = data.errors[key];
+            serverErrors[key] = Array.isArray(errVal) ? errVal.join(' ') : String(errVal);
+          });
+          setErrors(serverErrors);
+        }
+      }
+    } catch (err) {
+      // Network or offline error
+      setSubmissionStatus('network_error');
+      setStatusMessage(
+        'Unable to reach the backend API server. Please verify the Django backend is running at http://127.0.0.1:8000.'
+      );
+    } finally {
       setIsSubmitting(false);
-      setSubmissionStatus('validated');
-    }, 600);
+    }
   };
 
   return (
@@ -79,7 +130,7 @@ export const ContactSection = () => {
           badge="Direct Communication"
           title="Get in Touch &"
           highlightText="Connect"
-          subtitle="Have a question or interested in collaborating on full-stack software development? Send a message below."
+          subtitle="Have a question or interested in collaborating on full-stack software development? Send a message directly to my backend database."
         />
       </MotionReveal>
 
@@ -119,21 +170,32 @@ export const ContactSection = () => {
               </div>
             </div>
 
-            {/* Honest Technical Note regarding Django Integration */}
+            {/* Architecture Live Integration Details */}
             <div
               style={{
-                padding: '1rem',
+                padding: '1.15rem',
                 borderRadius: 'var(--radius-sm)',
-                background: 'rgba(2, 8, 23, 0.6)',
-                border: '1px solid rgba(0, 217, 255, 0.2)',
+                background: 'rgba(2, 8, 23, 0.65)',
+                border: '1px solid rgba(0, 217, 255, 0.25)',
                 display: 'flex',
+                flexDirection: 'column',
                 gap: '0.65rem'
               }}
             >
-              <Info size={18} color="var(--color-neon-cyan)" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>
-                <strong style={{ color: 'var(--color-neon-cyan)' }}>Backend Integration Status:</strong> This contact form includes comprehensive client-side validation. Complete server dispatch will be connected in the future Django backend phase without simulating false message transmissions.
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-neon-cyan)', fontSize: 'var(--text-xs)', fontWeight: 600 }}>
+                <Database size={16} />
+                <span>Full-Stack Integration Architecture</span>
+              </div>
+
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>
+                Submissions are sent directly to the Django REST Framework API (<code style={{ color: 'var(--color-neon-cyan)' }}>/api/contact/</code>), 
+                sanitized, validated against strict RFC constraints, and stored in the MySQL database table <code style={{ color: 'var(--color-neon-cyan)' }}>mubdev_contact_messages</code>.
               </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.7rem' }}>
+                <ShieldCheck size={14} color="#00D9FF" />
+                <span>Includes anti-spam honeypot and rate-limiting protection.</span>
+              </div>
             </div>
           </GlassCard>
         </MotionReveal>
@@ -142,21 +204,33 @@ export const ContactSection = () => {
         <MotionReveal direction="up" delay={0.3}>
           <GlassCard variant="default" glowColor="blue">
             <form onSubmit={handleSubmit} noValidate>
+              {/* Spam Honeypot - Hidden from humans, traps automated scrapers */}
+              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.website}
+                  onChange={handleChange}
+                />
+              </div>
+
               {/* Status Messages */}
-              {submissionStatus === 'error' && (
+              {(submissionStatus === 'error' || submissionStatus === 'network_error') && (
                 <div className="form-status-banner form-status-info" style={{ borderColor: '#ff4d6d' }}>
-                  <AlertCircle size={18} color="#ff4d6d" />
-                  <span>Please resolve the highlighted field errors before submitting.</span>
+                  <AlertCircle size={18} color="#ff4d6d" style={{ flexShrink: 0 }} />
+                  <span>{statusMessage}</span>
                 </div>
               )}
 
-              {submissionStatus === 'validated' && (
+              {submissionStatus === 'success' && (
                 <div className="form-status-banner form-status-success">
-                  <CheckCircle2 size={18} color="var(--color-neon-cyan)" />
+                  <CheckCircle2 size={18} color="var(--color-neon-cyan)" style={{ flexShrink: 0 }} />
                   <div>
-                    <strong>Form validation successful.</strong>
-                    <div style={{ fontSize: '0.75rem', marginTop: '2px', color: 'var(--text-secondary)' }}>
-                      Payload prepared for Django API endpoint: Name: <em>{formData.name}</em> ({formData.email}).
+                    <strong style={{ color: 'var(--color-white)' }}>Submission Confirmed!</strong>
+                    <div style={{ fontSize: '0.75rem', marginTop: '3px', color: 'var(--color-neon-cyan)' }}>
+                      {statusMessage}
                     </div>
                   </div>
                 </div>
@@ -175,6 +249,7 @@ export const ContactSection = () => {
                   placeholder="e.g. Alex Johnson"
                   value={formData.name}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   className={`form-input ${errors.name ? 'has-error' : ''}`}
                   aria-required="true"
                   aria-invalid={!!errors.name}
@@ -195,6 +270,7 @@ export const ContactSection = () => {
                   placeholder="e.g. alex@example.com"
                   value={formData.email}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   className={`form-input ${errors.email ? 'has-error' : ''}`}
                   aria-required="true"
                   aria-invalid={!!errors.email}
@@ -215,6 +291,7 @@ export const ContactSection = () => {
                   placeholder="e.g. Collaboration on Full-Stack Project"
                   value={formData.subject}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   className={`form-input ${errors.subject ? 'has-error' : ''}`}
                   aria-required="true"
                   aria-invalid={!!errors.subject}
@@ -235,6 +312,7 @@ export const ContactSection = () => {
                   placeholder="Write your message here..."
                   value={formData.message}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   className={`form-textarea ${errors.message ? 'has-error' : ''}`}
                   aria-required="true"
                   aria-invalid={!!errors.message}
@@ -252,7 +330,7 @@ export const ContactSection = () => {
                 iconPosition="right"
                 style={{ width: '100%', marginTop: '0.5rem' }}
               >
-                {isSubmitting ? 'Validating Payload...' : 'Submit Message'}
+                {isSubmitting ? 'Transmitting to Database...' : 'Send Message'}
               </Button>
             </form>
           </GlassCard>

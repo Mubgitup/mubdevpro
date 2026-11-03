@@ -6,11 +6,33 @@
 ## Project Structure
 ```
 mubdevpro/
-├── docs/
-│   ├── references/               # Authoritative screenshots & design references
-│   │   └── README.md
-│   ├── ARCHITECTURE.md           # Architecture, decisions, and system breakdown
-│   └── DESIGN_SYSTEM.md          # Complete design token specifications
+├── backend/                      # Python Django Backend
+│   ├── .env.example              # Documented environment variables template
+│   ├── manage.py                 # Django command-line runner
+│   ├── requirements.txt          # Python dependencies
+│   ├── test_integration.py       # Automated end-to-end integration test
+│   ├── mubdev_backend/           # Django core project configuration
+│   │   ├── __init__.py           # PyMySQL MySQLdb installation hook
+│   │   ├── asgi.py               # ASGI interface
+│   │   ├── settings.py           # Configuration, CORS, DRF & DB engine
+│   │   ├── urls.py               # Main URL routing & /api/health/
+│   │   └── wsgi.py               # WSGI interface
+│   └── contact/                  # Contact Management App
+│       ├── admin.py              # Django admin registration
+│       ├── apps.py               # App configuration
+│       ├── models.py             # ContactMessage database model
+│       ├── serializers.py        # Validation, sanitization & honeypot
+│       ├── tests.py              # Unit & integration tests
+│       ├── urls.py               # App URL routing
+│       ├── views.py              # ContactMessageCreateView API handler
+│       └── migrations/           # Django migration records
+├── docs/                         # Documentation suite
+│   ├── API_SPECIFICATION.md      # Complete REST API reference
+│   ├── ARCHITECTURE.md           # Master architecture record (this document)
+│   ├── DATABASE_DESIGN.md        # Database schema, constraints & indexes
+│   ├── DESIGN_SYSTEM.md          # Visual tokens, colors & 3D specifications
+│   ├── SYSTEM_ARCHITECTURE.md    # System architecture deep-dive
+│   └── references/               # Authoritative screenshots & design references
 ├── public/
 │   └── mubdev-favicon.svg        # Scalable SVG brand favicon
 ├── src/
@@ -50,7 +72,7 @@ mubdevpro/
 │   │   ├── SkillsSection.jsx     # Frontend, Programming, Backend, and Database categories
 │   │   ├── ProjectsSection.jsx   # Filterable project showcase with category tabs
 │   │   ├── JourneySection.jsx    # Education and learning journey timeline
-│   │   └── ContactSection.jsx    # Form with client validation, loading state & Django prep
+│   │   └── ContactSection.jsx    # Live form connected to Django API with honeypot & validation
 │   ├── styles/                   # Design system tokens and global CSS
 │   │   ├── variables.css
 │   │   ├── globals.css
@@ -60,30 +82,21 @@ mubdevpro/
 │   └── main.jsx                  # React DOM entry point
 ├── index.html                    # HTML entry with font preconnects & metadata
 ├── package.json                  # Dependencies & scripts
-└── vite.config.js                # Vite build and server configuration with manual chunking
+└── vite.config.js                # Vite build and server configuration with manual chunking & /api proxy
 ```
 
-## Technical Decisions & Phase 3 Architecture
-1. **Three-Dimensional Background (Three.js)**:
-   - Floating geometric wireframes (`BoxGeometry`, `OctahedronGeometry`, `IcosahedronGeometry`, `TorusGeometry`) with emissive materials in neon cyan (`#00D9FF`), electric blue (`#087BFF`), and violet (`#713BFF`).
-   - Digital particle field (`BufferGeometry` with custom vertex colors) drifting slowly across the scene.
-   - Fog exponential density (`FogExp2`) seamlessly blends 3D geometry into the midnight canvas.
-2. **Hero Portrait Seamless Integration**:
-   - Eliminated boxed rectangular card wrapper in favor of an organic holographic stage.
-   - Dual-tier atmospheric radial glow, rotating orbital cyber rings, and gradient edge vignette blending (`mask-image: radial-gradient(...)`).
-   - Retained the exact replaceable asset path (`src/assets/images/placeholder-portrait.svg`) for easy future replacement.
-3. **Flowing Vector Light Trails**:
-   - Curved SVG bezier trails with multi-stop cyan-blue-violet gradients, glowing Gaussian blur filters, and continuous `stroke-dashoffset` flow animations.
-4. **Performance & Hardware Optimization (Critical)**:
-   - **WebGL Feature Detection**: Automatically falls back to high-fidelity CSS radial glow orbs if WebGL is unavailable or errors out.
-   - **Tab Inactivity Optimization**: Uses the Page Visibility API (`visibilitychange`) to pause the render loop when the browser tab is hidden or backgrounded, eliminating idle GPU consumption.
-   - **Reduced Motion Support**: Detects `prefers-reduced-motion: reduce` across Three.js and Framer Motion, freezing dynamic motion and respecting accessibility preferences.
-   - **Mobile Complexity Scaling**: Dynamically adjusts particle count (220 on desktop vs 80 on mobile), scales geometric objects, and caps `devicePixelRatio` at `1.75`.
-   - **Chunk Splitting**: Rollup `manualChunks` configured in `vite.config.js` isolating `three`, `framer-motion`, and `lucide-react` for optimal caching and fast loads.
-5. **Glassmorphism Refinement**:
-   - `backdrop-filter: blur(20px)` paired with multi-layer surface reflections (`inset 0 1px 1px 0 rgba(255, 255, 255, 0.1)`), controlled depth shadows, and subtle cyan/violet borders.
-
-## Scripts
-- `npm run dev`: Starts local development server at `http://localhost:3000`.
-- `npm run build`: Compiles optimized production bundle with manual code-splitting.
-- `npm run preview`: Previews production build locally.
+## Technical Decisions & Phase 4 Backend Integration
+1. **Django REST Framework Architecture**:
+   - Modular application design: `contact` application handles inquiries.
+   - Model `ContactMessage` maps to `mubdev_contact_messages` with indexing on `created_at` and `email`.
+   - Comprehensive sanitization via `html.escape` and RFC email regex.
+   - Anti-spam honeypot field (`website`) traps automated web scrapers.
+   - Rate limiting: anonymous requests throttled to 10/hour per IP.
+2. **Database Resilience**:
+   - Primary target: MySQL with `utf8mb4` encoding, strict mode, and PyMySQL bridge.
+   - Development fallback: SQLite enabled automatically when MySQL server is not running locally, ensuring immediate testability.
+3. **Frontend Connection**:
+   - Form submission via native `fetch` targeting `/api/contact/`.
+   - Vite development proxy routes `/api/*` to `http://127.0.0.1:8000`.
+   - Real-time client & server error mapping under input fields.
+   - Form resets only upon confirmed HTTP 201 backend persistence.
