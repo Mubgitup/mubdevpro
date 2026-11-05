@@ -65,17 +65,9 @@ export const Navbar = () => {
   };
 
   return (
-    <header
-      className="glass-nav"
-      style={{
-        backgroundColor: isScrolled ? 'rgba(2, 8, 23, 0.92)' : 'rgba(2, 8, 23, 0.72)',
-        boxShadow: isScrolled
-          ? '0 4px 30px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(0, 217, 255, 0.2)'
-          : '0 1px 0 rgba(0, 217, 255, 0.12)'
-      }}
-    >
+    <header className={`glass-nav ${isScrolled ? 'scrolled' : ''}`}>
       <div className="section-container nav-container">
-        {/* Brand Logo */}
+        {/* Brand Logo in Premium Glass Capsule */}
         <a
           href="#hero"
           onClick={(e) => {
@@ -85,7 +77,7 @@ export const Navbar = () => {
           aria-label="Mubdev Home"
           style={{ textDecoration: 'none' }}
         >
-          <MubdevLogo size="md" />
+          <MubdevLogo size="md" inCapsule={true} />
         </a>
 
         {/* Desktop Navigation Links */}
@@ -150,7 +142,6 @@ export const Navbar = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
-            style={{ display: 'none' }}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>

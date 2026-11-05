@@ -25,7 +25,7 @@ export const Footer = () => {
         <div className="footer-top">
           <div style={{ maxWidth: '420px' }}>
             <div style={{ marginBottom: '0.85rem' }}>
-              <MubdevLogo size="md" />
+              <MubdevLogo size="md" showTagline={true} />
             </div>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
               Personal brand of <strong>{BRAND_PROFILE.name}</strong>. Software Engineering student at 

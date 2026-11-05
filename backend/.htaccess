@@ -1,0 +1,23 @@
+# ==============================================================================
+# Mubdev PHP Backend - Apache mod_rewrite Configuration
+# Routes all incoming API requests through index.php
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Pass Authorization header to PHP
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+    # Stop processing if file or directory exists
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redirect all other requests to index.php
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
