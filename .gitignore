@@ -30,6 +30,10 @@ backend/.env
 __pycache__/
 *.py[cod]
 *$py.class
+# SQLite & Runtime State
+*.sqlite
 *.sqlite3
 db.sqlite3
+backend/database/rate_limits.json
+backend_django_backup/
 staticfiles/

@@ -5,6 +5,7 @@ import { Button } from '../components/common/Button';
 import { MotionReveal } from '../components/common/MotionReveal';
 import { SocialIcon } from '../components/common/SocialIcon';
 import { SOCIAL_LINKS } from '../data/brandConfig';
+import { api } from '../services/api';
 import { Mail, Send, AlertCircle, CheckCircle2, Loader2, Database, ShieldCheck, Share2, ExternalLink } from 'lucide-react';
 
 export const ContactSection = () => {
@@ -76,22 +77,11 @@ export const ContactSection = () => {
     setStatusMessage('');
 
     try {
-      const response = await fetch('/api/contact/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      const data = await api.contact.submit(formData);
 
-      const data = await response.json().catch(() => ({}));
-
-      if (response.ok && data.success) {
-        // Confirmed backend persistence
+      if (data.success) {
         setSubmissionStatus('success');
         setStatusMessage(data.message || 'Your message has been safely stored in the database.');
-        // Reset form fields
         setFormData({
           name: '',
           email: '',
@@ -100,26 +90,23 @@ export const ContactSection = () => {
           website: ''
         });
         setErrors({});
-      } else {
-        // Backend validation errors
-        setSubmissionStatus('error');
-        setStatusMessage(data.message || 'Validation failed on server. Please check your inputs.');
-
-        if (data.errors && typeof data.errors === 'object') {
-          const serverErrors = {};
-          Object.keys(data.errors).forEach((key) => {
-            const errVal = data.errors[key];
-            serverErrors[key] = Array.isArray(errVal) ? errVal.join(' ') : String(errVal);
-          });
-          setErrors(serverErrors);
-        }
       }
     } catch (err) {
-      // Network or offline error
-      setSubmissionStatus('network_error');
-      setStatusMessage(
-        'Unable to reach the backend API server. Please verify the Django backend is running at http://127.0.0.1:8000.'
-      );
+      if (err.errors && typeof err.errors === 'object') {
+        setSubmissionStatus('error');
+        setStatusMessage(err.message || 'Validation failed on server. Please check your inputs.');
+        const serverErrors = {};
+        Object.keys(err.errors).forEach((key) => {
+          const errVal = err.errors[key];
+          serverErrors[key] = Array.isArray(errVal) ? errVal.join(' ') : String(errVal);
+        });
+        setErrors(serverErrors);
+      } else {
+        setSubmissionStatus(err.isNetworkError ? 'network_error' : 'error');
+        setStatusMessage(
+          err.message || 'Unable to reach the backend API server. Please verify the PHP backend is running at http://127.0.0.1:8000.'
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -191,7 +178,7 @@ export const ContactSection = () => {
                 </div>
 
                 <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.6 }}>
-                  Submissions are sent directly to the Django REST Framework API (<code style={{ color: 'var(--color-neon-cyan)' }}>/api/contact/</code>), 
+                  Submissions are sent directly to the PHP REST API (<code style={{ color: 'var(--color-neon-cyan)' }}>/api/contact/</code>), 
                   sanitized, validated against strict RFC constraints, and stored in the MySQL database table <code style={{ color: 'var(--color-neon-cyan)' }}>mubdev_contact_messages</code>.
                 </p>
 

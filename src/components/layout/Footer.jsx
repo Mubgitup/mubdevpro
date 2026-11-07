@@ -77,6 +77,15 @@ export const Footer = () => {
           <div>
             &copy; {currentYear} Mubdev ({BRAND_PROFILE.name}). All rights reserved. 
             Third-Year Software Engineering, Haramaya University.
+            <span style={{ margin: '0 0.5rem', opacity: 0.3 }}>•</span>
+            <a 
+              href="/admin/login" 
+              style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.8rem', transition: 'color 0.2s' }}
+              onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-neon-cyan)'}
+              onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+            >
+              Admin Portal
+            </a>
           </div>
 
           {/* Back to Top */}

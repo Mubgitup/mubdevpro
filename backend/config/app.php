@@ -5,6 +5,8 @@
 
 // Strict error reporting in development, safe in production
 ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+ini_set('error_log', dirname(__DIR__) . '/database/php_error.log');
 error_reporting(E_ALL);
 
 // Set standardized timezone

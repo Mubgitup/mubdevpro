@@ -1,76 +1,75 @@
 # Mubdev Database Design Documentation
 
 ## 1. Overview
-The **Mubdev** database layer is built around standard relational database design principles targeting **MySQL** (with `utf8mb4` character set and InnoDB storage engine), managed via Django migrations.
+The **Mubdev** database layer is designed for **MySQL 8.x / MariaDB** (with `utf8mb4` character set and InnoDB storage engine), accessed via **PHP PDO prepared statements**.
 
-To maintain optimal performance and avoid database bloat, the schema is strictly limited to verified entity models required by the portfolio.
-
----
-
-## 2. Entity Model: `ContactMessage`
-
-- **Database Table**: `mubdev_contact_messages`
-- **Engine**: InnoDB (MySQL)
-- **Character Set**: `utf8mb4`
-- **Collation**: `utf8mb4_unicode_ci`
-
-### Column Specifications
-
-| Column Name | SQL Type | Django Field Type | Nullable | Default | Constraints & Description |
-|---|---|---|---|---|---|
-| `id` | `BIGINT AUTO_INCREMENT` | `BigAutoField` | No | Auto | Primary Key |
-| `name` | `VARCHAR(120)` | `CharField` | No | - | Min length 2, Max length 120. Sanitized sender name. |
-| `email` | `VARCHAR(254)` | `EmailField` | No | - | Sender email address. Indexed for search & reply routing. |
-| `subject` | `VARCHAR(200)` | `CharField` | No | - | Min length 3, Max length 200. Inquiry subject line. |
-| `message` | `LONGTEXT` | `TextField` | No | - | Min length 10. Inquiry message body. |
-| `ip_address` | `VARCHAR(45)` | `GenericIPAddressField` | Yes | `NULL` | IPv4 or IPv6 client address for abuse prevention. |
-| `is_read` | `TINYINT(1)` | `BooleanField` | No | `FALSE` | Read status flag for administrative workflow. |
-| `created_at` | `DATETIME(6)` | `DateTimeField` | No | `CURRENT_TIMESTAMP` | Timestamp of submission. Indexed for timeline sorting. |
+For local development flexibility, the system features an automatic SQLite fallback when the MySQL service is offline, ensuring zero disruption during frontend work and automated test suites.
 
 ---
 
-## 3. Database Indexes
+## 2. Table Specifications
 
-To ensure fast querying and dashboard retrieval, explicit database indexes have been applied:
+### 2.1 Table: `mubdev_contact_messages`
+Stores visitor inquiries, collaboration proposals, and contact submissions.
 
-1. **`contact_created_idx`**:
-   - Fields: `created_at DESC`
-   - Purpose: Optimizes sorting when listing messages in chronological order.
-2. **`contact_email_idx`**:
-   - Fields: `email`
-   - Purpose: Accelerates sender lookups and deduplication audits.
+| Column Name | SQL Type | Nullable | Default | Description |
+|---|---|---|---|---|
+| `id` | `BIGINT UNSIGNED AUTO_INCREMENT` | No | Primary Key | Unique message identifier |
+| `name` | `VARCHAR(120)` | No | - | Sanitized sender full name (Min: 2) |
+| `email` | `VARCHAR(254)` | No | - | Sender contact email (Indexed) |
+| `subject` | `VARCHAR(200)` | No | - | Subject line (Min: 3) |
+| `message` | `LONGTEXT` | No | - | Message body (Min: 10) |
+| `ip_address` | `VARCHAR(45)` | Yes | `NULL` | IPv4 / IPv6 client address for abuse prevention |
+| `is_read` | `TINYINT(1)` | No | `0` | Review status flag (0 = unread, 1 = read) |
+| `created_at` | `DATETIME` | No | `CURRENT_TIMESTAMP` | Timestamp of submission (Indexed DESC) |
+
+#### Indexes
+1. `contact_created_idx`: `(created_at DESC)` — Optimizes inbox timeline sorting.
+2. `contact_email_idx`: `(email)` — Optimizes sender lookup and duplicate auditing.
 
 ---
 
-## 4. MySQL Configuration Instructions
+### 2.2 Table: `admin_users`
+Stores administrative accounts for managing portfolio messages, profile data, and settings.
 
-To configure a production or staging MySQL database:
+| Column Name | SQL Type | Nullable | Default | Description |
+|---|---|---|---|---|
+| `id` | `INT UNSIGNED AUTO_INCREMENT` | No | Primary Key | Unique admin user identifier |
+| `username` | `VARCHAR(60)` | No | Unique | Admin username (Indexed) |
+| `email` | `VARCHAR(254)` | No | Unique | Admin notification email |
+| `password_hash` | `VARCHAR(255)` | No | - | Bcrypt password hash (`password_hash`) |
+| `is_active` | `TINYINT(1)` | No | `1` | Account active state |
+| `created_at` | `DATETIME` | No | `CURRENT_TIMESTAMP` | Account creation timestamp |
+| `last_login` | `DATETIME` | Yes | `NULL` | Last successful login timestamp |
 
-1. Create the MySQL database and user:
+---
+
+## 3. SQL Setup & Seed Instructions
+
+To initialize the database in MySQL / phpMyAdmin:
+
+1. Import schema:
    ```sql
-   CREATE DATABASE mubdev_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE USER 'mubdev_user'@'localhost' IDENTIFIED BY 'StrongPasswordHere123!';
-   GRANT ALL PRIVILEGES ON mubdev_db.* TO 'mubdev_user'@'localhost';
-   FLUSH PRIVILEGES;
+   -- File: backend/database/schema.sql
+   CREATE DATABASE IF NOT EXISTS `mubdev_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   USE `mubdev_db`;
+   -- (Runs CREATE TABLE statements)
    ```
 
-2. Update `backend/.env`:
+2. Import seed data (provisions default administrator and migrated messages):
+   ```sql
+   -- File: backend/database/seed.sql
+   -- Default Admin Account:
+   -- Username: admin
+   -- Password: AdminMubdev2026!
+   ```
+
+3. Configure `backend/.env`:
    ```ini
-   DB_ENGINE=django.db.backends.mysql
-   DB_NAME=mubdev_db
-   DB_USER=mubdev_user
-   DB_PASSWORD=StrongPasswordHere123!
+   DB_DRIVER=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
+   DB_NAME=mubdev_db
+   DB_USER=root
+   DB_PASSWORD=
    ```
-
-3. Run migrations:
-   ```bash
-   python manage.py migrate
-   ```
-
----
-
-## 5. Migration History
-- `0001_initial`: Created initial model `ContactMessage` with table `mubdev_contact_messages`, constraints, and composite indexes.
-

@@ -74,16 +74,41 @@ class ContactController {
 
     /**
      * GET /api/messages/
-     * Administrative inbox: list all received messages.
+     * Administrative inbox: list all received messages with pagination and unread counts.
      */
     public static function listMessages(): void {
         AuthMiddleware::authenticate();
 
+        $pdo = Database::getConnection();
+        $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_contact_messages")->fetchColumn();
+        $unreadCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_contact_messages WHERE is_read = 0")->fetchColumn();
+
         $limit = isset($_GET['limit']) ? max(1, min(100, (int)$_GET['limit'])) : 50;
         $offset = isset($_GET['offset']) ? max(0, (int)$_GET['offset']) : 0;
+        $isReadFilter = isset($_GET['is_read']) ? (int)$_GET['is_read'] : null;
 
-        $messages = ContactMessage::getAll($limit, $offset);
-        Response::success('Messages retrieved successfully.', $messages, 200);
+        if ($isReadFilter !== null) {
+            $stmt = $pdo->prepare("SELECT * FROM mubdev_contact_messages WHERE is_read = :is_read ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+            $stmt->bindValue(':is_read', $isReadFilter, PDO::PARAM_INT);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            $messages = $stmt->fetchAll();
+        } else {
+            $messages = ContactMessage::getAll($limit, $offset);
+        }
+
+        Response::json([
+            'success' => true,
+            'message' => 'Messages retrieved successfully.',
+            'data' => $messages,
+            'meta' => [
+                'total_count' => $totalCount,
+                'unread_count' => $unreadCount,
+                'limit' => $limit,
+                'offset' => $offset
+            ]
+        ], 200);
     }
 
     /**

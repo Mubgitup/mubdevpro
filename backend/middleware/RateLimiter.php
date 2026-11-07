@@ -37,8 +37,10 @@ class RateLimiter {
             $retryAfter = $windowSeconds - ($now - $oldest);
             
             http_response_code(429);
-            header('Content-Type: application/json; charset=utf-8');
-            header("Retry-After: {$retryAfter}");
+            if (!headers_sent()) {
+                header('Content-Type: application/json; charset=utf-8');
+                header("Retry-After: {$retryAfter}");
+            }
             echo json_encode([
                 'detail' => "Request was throttled. Expected available in {$retryAfter} seconds."
             ]);

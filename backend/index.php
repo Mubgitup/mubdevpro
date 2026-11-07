@@ -1,4 +1,5 @@
 <?php
+ob_start();
 /**
  * Mubdev Portfolio Backend - Front Controller & REST API Router
  * 
@@ -87,8 +88,8 @@ try {
 } catch (Throwable $e) {
     error_log("Unhandled Server Exception: " . $e->getMessage() . "\n" . $e->getTraceAsString());
     Response::error(
-        'An internal server error occurred. Please contact the administrator.',
-        $config['debug'] ? ['exception' => $e->getMessage()] : null,
+        'Server Error: ' . $e->getMessage(),
+        ['exception' => $e->getMessage()],
         500
     );
 }
