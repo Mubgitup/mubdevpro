@@ -3,6 +3,8 @@
  * Source of truth for brand metadata, profile, navigation, and social links
  */
 
+import heroPortraitImg from '../assets/images/mubdev-hero.jpg';
+
 export const BRAND_PROFILE = {
   name: 'Mubarek Hussein',
   brand: 'Mubdev',
@@ -45,5 +47,6 @@ export { SOCIAL_LINKS } from './socialLinks';
 export const ASSET_PATHS = {
   logoSvg: '/src/assets/logo/mubdev-logo.svg',
   favicon: '/mubdev-favicon.svg',
-  placeholderPortrait: '/src/assets/images/placeholder-portrait.svg'
+  placeholderPortrait: heroPortraitImg,
+  heroPortrait: heroPortraitImg
 };

@@ -481,7 +481,7 @@
 .hero-portrait-stage {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -491,11 +491,11 @@
 .hero-portrait-stage::before {
   content: '';
   position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
-  background: radial-gradient(circle, rgba(0, 217, 255, 0.28) 0%, rgba(113, 59, 255, 0.22) 50%, transparent 75%);
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  background: radial-gradient(circle, rgba(0, 217, 255, 0.3) 0%, rgba(113, 59, 255, 0.25) 50%, transparent 75%);
   filter: blur(45px);
   z-index: 1;
   pointer-events: none;
@@ -504,9 +504,9 @@
 /* Orbital Cyber Rings Decoration */
 .hero-orbit-ring {
   position: absolute;
-  inset: -15px;
-  border-radius: 50%;
-  border: 1px dashed rgba(0, 217, 255, 0.22);
+  inset: -20px;
+  border-radius: 28px;
+  border: 1px dashed rgba(0, 217, 255, 0.25);
   pointer-events: none;
   z-index: 2;
   animation: rotateSlow 30s linear infinite;
@@ -514,9 +514,9 @@
 
 .hero-orbit-ring-secondary {
   position: absolute;
-  inset: -35px;
-  border-radius: 50%;
-  border: 1px dotted rgba(113, 59, 255, 0.2);
+  inset: -38px;
+  border-radius: 34px;
+  border: 1px dotted rgba(113, 59, 255, 0.22);
   pointer-events: none;
   z-index: 2;
   animation: rotateReverse 40s linear infinite;
@@ -537,18 +537,21 @@
   position: relative;
   z-index: 3;
   width: 100%;
-  max-width: 420px;
-  /* Natural gradient blending: bottom and edges dissolve into the midnight canvas */
-  -webkit-mask-image: radial-gradient(circle at 50% 45%, black 65%, rgba(0,0,0,0.7) 82%, transparent 100%),
-                      linear-gradient(to bottom, black 75%, transparent 100%);
-  mask-image: radial-gradient(circle at 50% 45%, black 65%, rgba(0,0,0,0.7) 82%, transparent 100%),
-              linear-gradient(to bottom, black 75%, transparent 100%);
-  filter: drop-shadow(0 0 35px rgba(8, 123, 255, 0.35));
-  transition: filter var(--transition-normal);
+  max-width: 480px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 217, 255, 0.35);
+  background: rgba(2, 8, 23, 0.7);
+  box-shadow: 0 0 35px rgba(0, 217, 255, 0.2), 0 20px 45px rgba(2, 8, 23, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--transition-normal);
 }
 
 .hero-portrait-blended:hover {
-  filter: drop-shadow(0 0 45px rgba(0, 217, 255, 0.5));
+  border-color: rgba(0, 217, 255, 0.65);
+  box-shadow: 0 0 50px rgba(0, 217, 255, 0.38), 0 25px 55px rgba(2, 8, 23, 0.95);
+  transform: translateY(-4px);
 }
 
 .hero-portrait-img {
@@ -556,7 +559,12 @@
   height: auto;
   display: block;
   object-fit: cover;
-  border-radius: var(--radius-xl);
+  border-radius: 19px;
+  transition: transform 0.4s ease;
+}
+
+.hero-portrait-blended:hover .hero-portrait-img {
+  transform: scale(1.02);
 }
 
 /* Floating Tech Chips */
@@ -692,7 +700,7 @@
    ========================================================================== */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--space-xl);
 }
 
@@ -700,43 +708,144 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  height: 100%;
 }
 
 .skill-category-header {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding-bottom: var(--space-xs);
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(0, 217, 255, 0.16);
 }
 
-.skill-item {
+.skill-category-icon-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.85rem 1rem;
-  border-radius: var(--radius-md);
-  background: rgba(2, 8, 23, 0.52);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all var(--transition-fast);
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md, 10px);
+  background: rgba(0, 217, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.12);
+  flex-shrink: 0;
 }
 
+.skill-category-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-white);
+  line-height: 1.25;
+}
+
+.skill-count-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  color: var(--text-muted, rgba(245, 248, 255, 0.55));
+  letter-spacing: 0.02em;
+}
+
+.skill-category-description {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.skills-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Glassmorphism Skill Card */
+.skill-item-card,
+.skill-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md, 12px);
+  background: rgba(2, 8, 23, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 217, 255, 0.12);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.04), 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-item-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--skill-accent, var(--color-neon-cyan, #00D9FF));
+  opacity: 0.6;
+  transition: opacity 0.25s ease, width 0.25s ease, box-shadow 0.25s ease;
+}
+
+.skill-item-card:hover,
 .skill-item:hover {
-  border-color: rgba(0, 217, 255, 0.38);
-  box-shadow: 0 0 16px rgba(0, 217, 255, 0.18);
-  transform: translateX(4px);
+  transform: translateY(-2px);
+  border-color: rgba(0, 217, 255, 0.35);
+  background: rgba(7, 27, 61, 0.55);
+  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.skill-item-card:hover::before {
+  opacity: 1;
+  width: 4px;
+  box-shadow: 0 0 10px var(--skill-accent, #00D9FF);
+}
+
+/* Logo Badge */
+.skill-logo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  background: rgba(2, 8, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.skill-item-card:hover .skill-logo-badge {
+  transform: scale(1.08);
+  border-color: rgba(0, 217, 255, 0.35);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.22);
+}
+
+.skill-content-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .skill-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .skill-name {
   font-weight: 600;
   font-size: var(--text-sm);
   color: var(--color-white);
+  letter-spacing: -0.01em;
 }
 
 .skill-status-tag {
@@ -747,12 +856,28 @@
   background: rgba(0, 217, 255, 0.1);
   color: var(--color-neon-cyan);
   border: 1px solid rgba(0, 217, 255, 0.22);
+  white-space: nowrap;
+  font-weight: 500;
 }
 
 .skill-desc {
   font-size: var(--text-xs);
   color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .skill-logo-badge {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
 }
 
 /* ==========================================================================

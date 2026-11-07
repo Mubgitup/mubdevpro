@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Save, CheckCircle2, Shield, GraduationCap, Code, Compass, Sparkles } from 'lucide-react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
-import { BRAND_PROFILE } from '../../data/brandConfig';
+import { BRAND_PROFILE, ASSET_PATHS } from '../../data/brandConfig';
 
 export const AdminProfilePage = () => {
   const [profile, setProfile] = useState({ ...BRAND_PROFILE });
@@ -156,20 +156,19 @@ export const AdminProfilePage = () => {
             textAlign: 'center'
           }}>
             <div style={{
-              width: '70px',
-              height: '70px',
-              margin: '0 auto 1rem',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #00D9FF, #713BFF)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.75rem',
-              fontWeight: 800,
-              color: '#fff',
-              boxShadow: '0 0 20px rgba(0, 217, 255, 0.4)'
+              width: '100%',
+              maxHeight: '140px',
+              overflow: 'hidden',
+              borderRadius: '10px',
+              marginBottom: '1rem',
+              border: '1px solid rgba(0, 217, 255, 0.3)',
+              boxShadow: '0 0 15px rgba(0, 217, 255, 0.2)'
             }}>
-              M
+              <img
+                src={ASSET_PATHS.heroPortrait}
+                alt="Mubdev Official Hero"
+                style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }}
+              />
             </div>
 
             <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>{profile.name}</div>

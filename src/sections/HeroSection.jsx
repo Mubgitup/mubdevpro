@@ -118,11 +118,11 @@ export const HeroSection = () => {
             {/* Seamless, Borderless Blended Portrait Asset */}
             <div className="hero-portrait-blended">
               <img
-                src={ASSET_PATHS.placeholderPortrait}
-                alt="Mubarek Hussein - Mubdev Replaceable Portrait Asset"
+                src={ASSET_PATHS.heroPortrait || ASSET_PATHS.placeholderPortrait}
+                alt="Mubarek Hussein - Mubdev Software Developer"
                 className="hero-portrait-img"
-                width="480"
-                height="580"
+                width="1024"
+                height="819"
                 loading="eager"
               />
             </div>
