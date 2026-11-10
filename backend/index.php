@@ -4,7 +4,7 @@ ob_start();
  * Mubdev Portfolio Backend - Front Controller & REST API Router
  * 
  * Routes incoming HTTP requests to controllers and handles CORS,
- * error handling, and JSON response lifecycle.
+ * static uploads serving, error handling, and JSON response lifecycle.
  */
 
 // 1. Initialize configuration & error handling
@@ -26,6 +26,30 @@ if ($path === '') {
     $path = '/';
 }
 
+// 4. Static Uploads File Server
+// Serves images located in backend/uploads/ directly if requested
+if (preg_match('#^/(?:api/)?uploads/(.+)$#', $path, $uploadMatches)) {
+    $relativeFilePath = $uploadMatches[1];
+    $fullFilePath = __DIR__ . '/uploads/' . $relativeFilePath;
+
+    if (file_exists($fullFilePath) && is_file($fullFilePath)) {
+        $mime = mime_content_type($fullFilePath) ?: 'application/octet-stream';
+        // Handle SVG mime type properly
+        if (substr($fullFilePath, -4) === '.svg') {
+            $mime = 'image/svg+xml';
+        }
+
+        header("Content-Type: {$mime}");
+        header('Content-Length: ' . filesize($fullFilePath));
+        header('Cache-Control: public, max-age=86400'); // Cache for 1 day
+        readfile($fullFilePath);
+        exit;
+    } else {
+        Response::error('Requested upload file not found.', null, 404);
+        exit;
+    }
+}
+
 // Support both direct '/api/...' and nested '/mubdevpro/backend/api/...' URLs
 $apiPrefixPos = strpos($path, '/api');
 if ($apiPrefixPos !== false) {
@@ -34,7 +58,7 @@ if ($apiPrefixPos !== false) {
     $route = $path;
 }
 
-// 4. Route Dispatcher
+// 5. Route Dispatcher
 try {
     // Health Check Endpoint
     if (($route === '/api/health' || $route === '/health') && $method === 'GET') {
@@ -82,6 +106,82 @@ try {
         }
     }
 
+    // =========================================================================
+    // PROJECTS API ROUTES
+    // =========================================================================
+    
+    // Public projects listing (published only)
+    if ($route === '/api/projects' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/ProjectController.php';
+        ProjectController::listPublic();
+    }
+
+    // Admin projects catalog (all projects with filtering & pagination)
+    if ($route === '/api/admin/projects' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/ProjectController.php';
+        ProjectController::listAdmin();
+    }
+
+    // Create new project
+    if ($route === '/api/projects' && $method === 'POST') {
+        require_once __DIR__ . '/controllers/ProjectController.php';
+        ProjectController::create();
+    }
+
+    // Parameterized project status toggle: /api/projects/{id}/status
+    if (preg_match('#^/api/projects/(\d+)/status$#', $route, $matches)) {
+        $id = (int)$matches[1];
+        require_once __DIR__ . '/controllers/ProjectController.php';
+        if ($method === 'PATCH' || $method === 'POST' || $method === 'PUT') {
+            ProjectController::toggleStatus($id);
+        }
+    }
+
+    // Parameterized project single/update/delete: /api/projects/{id}
+    if (preg_match('#^/api/projects/(\d+)$#', $route, $matches)) {
+        $id = (int)$matches[1];
+        require_once __DIR__ . '/controllers/ProjectController.php';
+
+        if ($method === 'GET') {
+            ProjectController::getSingle($id);
+        } elseif ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
+            // Note: POST with multipart/form-data is commonly used for updates containing file uploads
+            ProjectController::update($id);
+        } elseif ($method === 'DELETE') {
+            ProjectController::delete($id);
+        }
+    }
+
+    // =========================================================================
+    // EDUCATION & JOURNEY API ROUTES
+    // =========================================================================
+    
+    // Education list: GET /api/education
+    if ($route === '/api/education' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/EducationController.php';
+        EducationController::list();
+    }
+
+    // Create new education record: POST /api/education
+    if ($route === '/api/education' && $method === 'POST') {
+        require_once __DIR__ . '/controllers/EducationController.php';
+        EducationController::create();
+    }
+
+    // Parameterized education single/update/delete: /api/education/{id}
+    if (preg_match('#^/api/education/(\d+)$#', $route, $matches)) {
+        $id = (int)$matches[1];
+        require_once __DIR__ . '/controllers/EducationController.php';
+
+        if ($method === 'GET') {
+            EducationController::getSingle($id);
+        } elseif ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
+            EducationController::update($id);
+        } elseif ($method === 'DELETE') {
+            EducationController::delete($id);
+        }
+    }
+
     // Default 404 handler for unrecognized endpoints
     Response::error("Resource not found: [{$method}] {$route}", null, 404);
 
@@ -93,4 +193,3 @@ try {
         500
     );
 }
-

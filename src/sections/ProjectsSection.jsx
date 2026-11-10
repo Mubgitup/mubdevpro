@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { ProjectCard } from '../components/common/ProjectCard';
 import { MotionReveal } from '../components/common/MotionReveal';
 import { PROJECTS, PROJECT_CATEGORIES } from '../data/projectsData';
+import { api } from '../services/api';
 
 export const ProjectsSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [projectsList, setProjectsList] = useState(PROJECTS);
+
+  useEffect(() => {
+    let isMounted = true;
+    api.projects.listPublic()
+      .then((res) => {
+        const items = Array.isArray(res?.data) 
+          ? res.data 
+          : Array.isArray(res?.data?.projects) 
+            ? res.data.projects 
+            : Array.isArray(res?.projects) 
+              ? res.projects 
+              : null;
+        if (isMounted && items && items.length > 0) {
+          setProjectsList(items);
+        }
+      })
+      .catch((_err) => {
+        // Graceful fallback to static projects data if offline
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredProjects = selectedCategory === 'All'
-    ? PROJECTS
-    : PROJECTS.filter((p) => p.category === selectedCategory);
+    ? projectsList
+    : projectsList.filter((p) => p.category === selectedCategory);
 
   return (
     <section className="section-container section-py" id="projects">

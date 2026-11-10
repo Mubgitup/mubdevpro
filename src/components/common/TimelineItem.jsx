@@ -3,6 +3,10 @@ import { GlassCard } from './GlassCard';
 import { Calendar, CheckCircle } from 'lucide-react';
 
 export const TimelineItem = ({ milestone }) => {
+  const highlights = Array.isArray(milestone.highlights) ? milestone.highlights : [];
+  const title = milestone.degree || milestone.title;
+  const organization = milestone.institution || milestone.organization;
+
   return (
     <div className="timeline-item">
       <div className="timeline-node-pin">
@@ -13,19 +17,19 @@ export const TimelineItem = ({ milestone }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
           <div>
             <span className="badge badge-violet" style={{ marginBottom: '0.4rem' }}>
-              {milestone.type}
+              {milestone.type || 'Formal Degree Education'}
             </span>
             <h3 style={{ fontSize: 'var(--text-lg)', color: 'var(--color-white)' }}>
-              {milestone.title}
+              {title}
             </h3>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-neon-cyan)', margin: '0.2rem 0 0.5rem 0', fontWeight: 600 }}>
-              {milestone.organization}
+              {organization}
             </p>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)' }}>
             <Calendar size={14} />
-            <span>{milestone.status}</span>
+            <span>{milestone.status || (milestone.is_current ? 'In Progress' : 'Completed')}</span>
           </div>
         </div>
 
@@ -33,27 +37,29 @@ export const TimelineItem = ({ milestone }) => {
           {milestone.description}
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-          {milestone.highlights.map((highlight) => (
-            <span
-              key={highlight}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.35rem',
-                fontSize: '0.75rem',
-                color: 'var(--text-secondary)',
-                background: 'rgba(2, 8, 23, 0.5)',
-                padding: '0.25rem 0.6rem',
-                borderRadius: 'var(--radius-xs)',
-                border: '1px solid rgba(0, 217, 255, 0.15)'
-              }}
-            >
-              <CheckCircle size={12} color="var(--color-neon-cyan)" />
-              {highlight}
-            </span>
-          ))}
-        </div>
+        {highlights.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {highlights.map((highlight) => (
+              <span
+                key={highlight}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.75rem',
+                  color: 'var(--text-secondary)',
+                  background: 'rgba(2, 8, 23, 0.5)',
+                  padding: '0.25rem 0.6rem',
+                  borderRadius: 'var(--radius-xs)',
+                  border: '1px solid rgba(0, 217, 255, 0.15)'
+                }}
+              >
+                <CheckCircle size={12} color="var(--color-neon-cyan)" />
+                {highlight}
+              </span>
+            ))}
+          </div>
+        )}
       </GlassCard>
     </div>
   );

@@ -8,6 +8,11 @@ export default defineConfig({
     port: 3000,
     open: false,
     proxy: {
+      '/uploads': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        secure: false
+      },
       '/api': {
         target: 'http://127.0.0.1:8000',
         changeOrigin: true,

@@ -30,12 +30,12 @@ try {
     $pdo->exec("USE `{$dbname}`");
     echo ">>> Database `{$dbname}` ready.\n\n";
 
-    echo "[3/4] Provisioning tables (`admin_users`, `mubdev_contact_messages`)...\n";
+    echo "[3/4] Provisioning tables (`admin_users`, `mubdev_contact_messages`, `mubdev_projects`, `mubdev_education`)...\n";
     $schemaSql = file_get_contents(__DIR__ . '/database/schema.sql');
     $pdo->exec($schemaSql);
     echo ">>> Database schema applied successfully.\n\n";
 
-    echo "[4/4] Seeding default administrator and initial messages...\n";
+    echo "[4/4] Seeding default administrator, initial messages, projects, and education records...\n";
     $seedSql = file_get_contents(__DIR__ . '/database/seed.sql');
     $pdo->exec($seedSql);
     echo ">>> Seed data applied successfully.\n\n";
@@ -45,6 +45,8 @@ try {
     echo "MySQL database `{$dbname}` is fully active with:\n";
     echo "- Table `admin_users` (admin / AdminMubdev2026!)\n";
     echo "- Table `mubdev_contact_messages`\n";
+    echo "- Table `mubdev_projects` (Full CRUD Portfolio Management)\n";
+    echo "- Table `mubdev_education` (Full CRUD Education & Journey Management)\n";
     echo "========================================================\n";
 
 } catch (PDOException $e) {

@@ -123,6 +123,68 @@ export const api = {
     delete: (id) => request(`/messages/${id}`, {
       method: 'DELETE'
     })
+  },
+
+  // Portfolio Projects Management
+  projects: {
+    listPublic: (category) => {
+      const q = category && category !== 'All' && category !== 'undefined' ? `?category=${encodeURIComponent(category)}` : '';
+      return request(`/projects${q}`);
+    },
+    listAdmin: (params = {}) => {
+      const cleanParams = {};
+      Object.keys(params).forEach((key) => {
+        const val = params[key];
+        if (val !== undefined && val !== null && val !== '' && val !== 'undefined') {
+          cleanParams[key] = val;
+        }
+      });
+      const query = new URLSearchParams(cleanParams).toString();
+      return request(`/admin/projects${query ? `?${query}` : ''}`);
+    },
+    get: (id) => request(`/projects/${id}`),
+    create: (data) => request('/projects', {
+      method: 'POST',
+      body: data
+    }),
+    update: (id, data) => request(`/projects/${id}`, {
+      method: 'POST',
+      body: data
+    }),
+    toggleStatus: (id, status) => request(`/projects/${id}/status`, {
+      method: 'PATCH',
+      body: { status }
+    }),
+    delete: (id) => request(`/projects/${id}`, {
+      method: 'DELETE'
+    })
+  },
+
+  // Education & Learning Journey Management
+  education: {
+    list: (params = {}) => {
+      const cleanParams = {};
+      Object.keys(params).forEach((key) => {
+        const val = params[key];
+        if (val !== undefined && val !== null && val !== '' && val !== 'undefined') {
+          cleanParams[key] = val;
+        }
+      });
+      const query = new URLSearchParams(cleanParams).toString();
+      return request(`/education${query ? `?${query}` : ''}`);
+    },
+    get: (id) => request(`/education/${id}`),
+    create: (data) => request('/education', {
+      method: 'POST',
+      body: data
+    }),
+    update: (id, data) => request(`/education/${id}`, {
+      method: 'POST',
+      body: data
+    }),
+    delete: (id) => request(`/education/${id}`, {
+      method: 'DELETE'
+    })
   }
 };
 

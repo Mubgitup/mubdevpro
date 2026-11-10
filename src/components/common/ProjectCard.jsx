@@ -4,23 +4,73 @@ import { Button } from './Button';
 import { Github, ExternalLink, Code2 } from 'lucide-react';
 
 export const ProjectCard = ({ project }) => {
+  const imageUrl = project.image_url || project.image || null;
+  const [imageError, setImageError] = React.useState(false);
+
   return (
     <GlassCard variant="interactive" glowColor="blue" className="project-card">
       <div>
         {/* Project Preview Mockup Header */}
         <div className="project-preview-mockup">
-          <Code2 size={36} color="var(--color-neon-cyan)" style={{ zIndex: 1 }} />
-          <span 
-            style={{ 
-              fontFamily: 'var(--font-mono)', 
-              fontSize: '0.75rem', 
-              color: 'var(--text-secondary)',
-              zIndex: 1,
-              letterSpacing: '0.05em'
-            }}
-          >
-            {project.category}
-          </span>
+          {imageUrl && !imageError ? (
+            <>
+              <img
+                src={imageUrl}
+                alt={project.title}
+                onError={() => setImageError(true)}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  zIndex: 1,
+                  filter: 'brightness(0.85) contrast(1.05)',
+                  transition: 'transform 0.4s ease, filter 0.3s ease'
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(2, 8, 23, 0.88) 0%, rgba(2, 8, 23, 0.3) 60%, transparent 100%)',
+                  zIndex: 2
+                }}
+              />
+              <span
+                style={{
+                  position: 'absolute',
+                  bottom: '10px',
+                  left: '12px',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.75rem',
+                  color: 'var(--color-neon-cyan)',
+                  zIndex: 3,
+                  letterSpacing: '0.05em',
+                  fontWeight: 600,
+                  textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                }}
+              >
+                {project.category}
+              </span>
+            </>
+          ) : (
+            <>
+              <Code2 size={36} color="var(--color-neon-cyan)" style={{ zIndex: 1 }} />
+              <span 
+                style={{ 
+                  fontFamily: 'var(--font-mono)', 
+                  fontSize: '0.75rem', 
+                  color: 'var(--text-secondary)',
+                  zIndex: 1,
+                  letterSpacing: '0.05em'
+                }}
+              >
+                {project.category}
+              </span>
+            </>
+          )}
+
           <span 
             className="badge" 
             style={{ 
@@ -28,7 +78,7 @@ export const ProjectCard = ({ project }) => {
               top: '10px', 
               right: '10px', 
               fontSize: '0.65rem',
-              zIndex: 2
+              zIndex: 4
             }}
           >
             {project.badge}
