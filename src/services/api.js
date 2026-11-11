@@ -185,6 +185,60 @@ export const api = {
     delete: (id) => request(`/education/${id}`, {
       method: 'DELETE'
     })
+  },
+
+  // Certificates & Professional Credentials Management
+  certificates: {
+    list: (params = {}) => {
+      const cleanParams = {};
+      Object.keys(params).forEach((key) => {
+        const val = params[key];
+        if (val !== undefined && val !== null && val !== '' && val !== 'undefined') {
+          cleanParams[key] = val;
+        }
+      });
+      const query = new URLSearchParams(cleanParams).toString();
+      return request(`/certificates${query ? `?${query}` : ''}`);
+    },
+    get: (id) => request(`/certificates/${id}`),
+    create: (data) => request('/certificates', {
+      method: 'POST',
+      body: data
+    }),
+    update: (id, data) => request(`/certificates/${id}`, {
+      method: 'POST',
+      body: data
+    }),
+    delete: (id) => request(`/certificates/${id}`, {
+      method: 'DELETE'
+    })
+  },
+
+  // Technical Achievements & Recognitions Management
+  achievements: {
+    list: (params = {}) => {
+      const cleanParams = {};
+      Object.keys(params).forEach((key) => {
+        const val = params[key];
+        if (val !== undefined && val !== null && val !== '' && val !== 'undefined') {
+          cleanParams[key] = val;
+        }
+      });
+      const query = new URLSearchParams(cleanParams).toString();
+      return request(`/achievements${query ? `?${query}` : ''}`);
+    },
+    get: (id) => request(`/achievements/${id}`),
+    create: (data) => request('/achievements', {
+      method: 'POST',
+      body: data
+    }),
+    update: (id, data) => request(`/achievements/${id}`, {
+      method: 'POST',
+      body: data
+    }),
+    delete: (id) => request(`/achievements/${id}`, {
+      method: 'DELETE'
+    })
   }
 };
 

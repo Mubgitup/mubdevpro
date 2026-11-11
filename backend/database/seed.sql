@@ -203,3 +203,139 @@ VALUES
   '2026-11-04 16:00:00'
 )
 ON DUPLICATE KEY UPDATE `institution` = VALUES(`institution`), `degree` = VALUES(`degree`);
+
+-- 5. Seed authentic certificate credentials and achievements
+INSERT INTO `mubdev_certificates` (`id`, `title`, `issuer`, `issue_date`, `credential_id`, `verification_url`, `image_url`, `skills`, `description`, `display_order`, `featured`, `created_at`)
+VALUES
+(
+  1,
+  'Udacity Web Development Program Certificate',
+  'Udacity',
+  '2024',
+  'UDACITY-WD-2024',
+  'https://www.udacity.com',
+  NULL,
+  '["Semantic HTML5", "Modern CSS Layouts", "Vanilla JavaScript & DOM", "Web APIs"]',
+  'Intensive curriculum focused on building responsive, performant web applications with standards-compliant HTML5, modular CSS layouts, dynamic DOM manipulation, and asynchronous REST APIs.',
+  1,
+  1,
+  '2026-11-01 12:00:00'
+),
+(
+  2,
+  'Software Engineering Coursework Credential',
+  'Haramaya University',
+  '2024',
+  'HU-SE-3RDYEAR',
+  'https://www.haramaya.edu.et',
+  NULL,
+  '["C++ & OOP", "Relational Databases", "Data Structures", "Software Engineering Principles"]',
+  'Verified academic transcript and curriculum achievements in Object-Oriented Programming, Data Structures, Relational Database Modeling, and Software Engineering Systems.',
+  2,
+  1,
+  '2026-11-02 14:00:00'
+),
+(
+  3,
+  '[SAMPLE / DEMO] Web Development Professional Certificate',
+  'Demo Training Institute (SAMPLE)',
+  '2024 (DEMO)',
+  'DEMO-WD-2024-SAMPLE',
+  'https://example.com/verify/demo-wd',
+  '/uploads/certificates/demo_cert_webdev.svg',
+  '["HTML5 (Demo)", "CSS3 (Demo)", "JavaScript (Demo)", "Responsive Design"]',
+  '[SAMPLE / DEMO RECORD] Demonstrates completed coursework in frontend web development architectures, layout modeling, and interactive DOM development.',
+  3,
+  1,
+  '2026-11-03 10:00:00'
+),
+(
+  4,
+  '[SAMPLE / DEMO] Python Programming & Backend Foundations',
+  'Demo Technology Academy (SAMPLE)',
+  '2024 (DEMO)',
+  'DEMO-PY-2024-SAMPLE',
+  'https://example.com/verify/demo-py',
+  '/uploads/certificates/demo_cert_python.svg',
+  '["Python (Demo)", "Data Structures (Demo)", "Algorithms", "Backend Scripting"]',
+  '[SAMPLE / DEMO RECORD] Demonstrates foundational programming in Python, object-oriented concepts, algorithm optimization, and server-side data processing.',
+  4,
+  1,
+  '2026-11-04 11:30:00'
+),
+(
+  5,
+  '[SAMPLE / DEMO] UI/UX Design & Digital Interface Principles',
+  'Demo Creative Academy (SAMPLE)',
+  '2024 (DEMO)',
+  'DEMO-UIUX-2024-SAMPLE',
+  'https://example.com/verify/demo-uiux',
+  '/uploads/certificates/demo_cert_uiux.svg',
+  '["Wireframing (Demo)", "Figma Prototyping", "User Research", "Visual Systems"]',
+  '[SAMPLE / DEMO RECORD] Demonstrates foundational principles of modern user interface design, user journey mapping, design systems, and responsive wireframing.',
+  5,
+  1,
+  '2026-11-05 14:00:00'
+)
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `issuer` = VALUES(`issuer`);
+
+-- 6. Seed authentic milestones, technical achievements, and recognitions
+INSERT INTO `mubdev_achievements` (`id`, `title`, `category`, `organization`, `date`, `description`, `image_url`, `link_url`, `highlights`, `display_order`, `featured`, `created_at`)
+VALUES
+(
+  1,
+  'Full-Stack Architecture & Backend Systems Milestone',
+  'Technical Milestone',
+  'Self-Directed Exploration & Research',
+  '2023 - Present',
+  'Deepening full-stack engineering capabilities with Django REST Framework, PHP backend fundamentals, MySQL relational database architecture, and scalable system design.',
+  NULL,
+  NULL,
+  '["Django REST Framework", "PHP server-side scripting", "MySQL database modeling", "API architecture"]',
+  1,
+  1,
+  '2026-11-01 10:00:00'
+),
+(
+  2,
+  'Applied Software Practice & Algorithmic Problem Solving',
+  'Applied Milestone',
+  'Independent Lab & University Practice',
+  '2023 - Present',
+  'Engineering practice projects, translating theoretical concepts from coursework into real code, algorithmic problem solving in C++, and modern frontend interfaces.',
+  NULL,
+  NULL,
+  '["React component engineering", "Full-stack prototyping", "Algorithmic problem solving"]',
+  2,
+  1,
+  '2026-11-02 11:30:00'
+),
+(
+  3,
+  'Academic Standing & Software Engineering Curriculum Honors',
+  'Academic Recognition',
+  'Haramaya University',
+  '2024',
+  'Maintaining strong academic standing across foundational and advanced software engineering coursework including Object-Oriented Design, Database Systems, and Systems Programming.',
+  NULL,
+  'https://www.haramaya.edu.et',
+  '["C++ & Systems Programming", "Object-Oriented Design", "Relational Database Modeling"]',
+  3,
+  1,
+  '2026-11-03 14:00:00'
+),
+(
+  4,
+  'Udacity Web Development Program Completion',
+  'Technical Milestone',
+  'Udacity',
+  '2024',
+  'Successfully completed comprehensive coursework in responsive web architecture, modular JavaScript programming, DOM event models, and asynchronous REST APIs.',
+  NULL,
+  'https://www.udacity.com',
+  '["Responsive web design", "Vanilla JavaScript & DOM manipulation", "Modern CSS layout models"]',
+  4,
+  1,
+  '2026-11-04 16:00:00'
+)
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `category` = VALUES(`category`);

@@ -182,6 +182,66 @@ try {
         }
     }
 
+    // =========================================================================
+    // CERTIFICATES API ROUTES
+    // =========================================================================
+
+    // Certificates list: GET /api/certificates
+    if ($route === '/api/certificates' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/CertificateController.php';
+        CertificateController::list();
+    }
+
+    // Create certificate: POST /api/certificates
+    if ($route === '/api/certificates' && $method === 'POST') {
+        require_once __DIR__ . '/controllers/CertificateController.php';
+        CertificateController::create();
+    }
+
+    // Single/update/delete certificate: /api/certificates/{id}
+    if (preg_match('#^/api/certificates/(\d+)$#', $route, $matches)) {
+        $id = (int)$matches[1];
+        require_once __DIR__ . '/controllers/CertificateController.php';
+
+        if ($method === 'GET') {
+            CertificateController::getSingle($id);
+        } elseif ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
+            CertificateController::update($id);
+        } elseif ($method === 'DELETE') {
+            CertificateController::delete($id);
+        }
+    }
+
+    // =========================================================================
+    // ACHIEVEMENTS API ROUTES
+    // =========================================================================
+
+    // Achievements list: GET /api/achievements
+    if ($route === '/api/achievements' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/AchievementController.php';
+        AchievementController::list();
+    }
+
+    // Create achievement: POST /api/achievements
+    if ($route === '/api/achievements' && $method === 'POST') {
+        require_once __DIR__ . '/controllers/AchievementController.php';
+        AchievementController::create();
+    }
+
+    // Single/update/delete achievement: /api/achievements/{id}
+    if (preg_match('#^/api/achievements/(\d+)$#', $route, $matches)) {
+        $id = (int)$matches[1];
+        require_once __DIR__ . '/controllers/AchievementController.php';
+
+        if ($method === 'GET') {
+            AchievementController::getSingle($id);
+        } elseif ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
+            AchievementController::update($id);
+        } elseif ($method === 'DELETE') {
+            AchievementController::delete($id);
+        }
+    }
+
     // Default 404 handler for unrecognized endpoints
     Response::error("Resource not found: [{$method}] {$route}", null, 404);
 

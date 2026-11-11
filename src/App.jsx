@@ -14,6 +14,7 @@ import { AdminSkillsPage } from './pages/admin/AdminSkillsPage';
 import { AdminProjectsPage } from './pages/admin/AdminProjectsPage';
 import { AdminEducationPage } from './pages/admin/AdminEducationPage';
 import { AdminCertificatesPage } from './pages/admin/AdminCertificatesPage';
+import { AdminAchievementsPage } from './pages/admin/AdminAchievementsPage';
 import { AdminSocialMediaPage } from './pages/admin/AdminSocialMediaPage';
 import { AdminMessagesPage } from './pages/admin/AdminMessagesPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
@@ -28,6 +29,7 @@ const KNOWN_ROUTES = [
   '/admin/projects',
   '/admin/education',
   '/admin/certificates',
+  '/admin/achievements',
   '/admin/social-media',
   '/admin/messages',
   '/admin/settings'
@@ -114,6 +116,14 @@ export function App() {
         element={
           <ProtectedRoute>
             <AdminCertificatesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/achievements"
+        element={
+          <ProtectedRoute>
+            <AdminAchievementsPage />
           </ProtectedRoute>
         }
       />

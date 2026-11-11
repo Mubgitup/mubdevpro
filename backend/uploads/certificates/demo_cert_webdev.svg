@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#0a2558" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#071B3D" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#020817" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="neonCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D9FF"/>
+      <stop offset="50%" stop-color="#087BFF"/>
+      <stop offset="100%" stop-color="#713BFF"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1200" height="850" fill="url(#bgGlow)"/>
+
+  <!-- Subtle Tech Grid -->
+  <g opacity="0.08" stroke="#00D9FF" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="850"/>
+    <line x1="300" y1="0" x2="300" y2="850"/>
+    <line x1="500" y1="0" x2="500" y2="850"/>
+    <line x1="700" y1="0" x2="700" y2="850"/>
+    <line x1="900" y1="0" x2="900" y2="850"/>
+    <line x1="1100" y1="0" x2="1100" y2="850"/>
+    <line x1="0" y1="150" x2="1200" y2="150"/>
+    <line x1="0" y1="350" x2="1200" y2="350"/>
+    <line x1="0" y1="550" x2="1200" y2="550"/>
+    <line x1="0" y1="750" x2="1200" y2="750"/>
+  </g>
+
+  <!-- Outer Frame -->
+  <rect x="40" y="40" width="1120" height="770" rx="16" fill="none" stroke="url(#neonCyanGrad)" stroke-width="3" filter="url(#glowEffect)"/>
+  <rect x="55" y="55" width="1090" height="740" rx="12" fill="none" stroke="rgba(0, 217, 255, 0.3)" stroke-width="1"/>
+
+  <!-- Corner Tech Brackets -->
+  <path d="M 60 110 L 60 60 L 110 60" fill="none" stroke="#00D9FF" stroke-width="4"/>
+  <path d="M 1140 110 L 1140 60 L 1090 60" fill="none" stroke="#00D9FF" stroke-width="4"/>
+  <path d="M 60 740 L 60 790 L 110 790" fill="none" stroke="#00D9FF" stroke-width="4"/>
+  <path d="M 1140 740 L 1140 790 L 1090 790" fill="none" stroke="#00D9FF" stroke-width="4"/>
+
+  <!-- Prominent Diagonal Watermark (DEMO / SAMPLE) -->
+  <g transform="translate(600, 425) rotate(-30)">
+    <text x="0" y="-30" font-family="'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="900" fill="rgba(255, 77, 109, 0.16)" text-anchor="middle" letter-spacing="8">
+      SAMPLE / DEMO RECORD
+    </text>
+    <text x="0" y="40" font-family="'Segoe UI', Roboto, sans-serif" font-size="32" font-weight="700" fill="rgba(255, 77, 109, 0.22)" text-anchor="middle" letter-spacing="4">
+      NOT AN OFFICIAL QUALIFICATION
+    </text>
+  </g>
+
+  <!-- Top Badge Ribbon -->
+  <rect x="425" y="65" width="350" height="34" rx="17" fill="rgba(255, 77, 109, 0.18)" stroke="#FF4D6D" stroke-width="1.5"/>
+  <text x="600" y="88" font-family="'Courier New', monospace" font-size="14" font-weight="800" fill="#FF8096" text-anchor="middle" letter-spacing="2">
+    ⚠️ DEMO PREVIEW ONLY • SAMPLE RECORD
+  </text>
+
+  <!-- Issuer Header -->
+  <text x="600" y="165" font-family="'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#00D9FF" text-anchor="middle" letter-spacing="6">
+    DEMO TRAINING INSTITUTE
+  </text>
+  <text x="600" y="215" font-family="'Segoe UI', Roboto, sans-serif" font-size="36" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">
+    CERTIFICATE OF COMPLETION
+  </text>
+  <line x1="450" y1="240" x2="750" y2="240" stroke="url(#neonCyanGrad)" stroke-width="2"/>
+
+  <!-- Recipient Section -->
+  <text x="600" y="285" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" fill="rgba(245, 248, 255, 0.7)" text-anchor="middle" letter-spacing="3">
+    THIS PREVIEW CERTIFICATE IS PRESENTED TO
+  </text>
+  <text x="600" y="345" font-family="'Segoe UI', Roboto, sans-serif" font-size="42" font-weight="800" fill="url(#goldGrad)" text-anchor="middle">
+    Mubarek Hussein
+  </text>
+  <text x="600" y="390" font-family="'Segoe UI', Roboto, sans-serif" font-size="16" fill="rgba(245, 248, 255, 0.75)" text-anchor="middle">
+    for successfully completing the curriculum and practical evaluations for
+  </text>
+
+  <!-- Course Title -->
+  <rect x="250" y="420" width="700" height="65" rx="8" fill="rgba(7, 27, 61, 0.7)" stroke="rgba(0, 217, 255, 0.4)" stroke-width="1.5"/>
+  <text x="600" y="462" font-family="'Segoe UI', Roboto, sans-serif" font-size="26" font-weight="800" fill="#00D9FF" text-anchor="middle">
+    Web Development Professional Track (Demo)
+  </text>
+
+  <!-- Competencies & Description -->
+  <text x="600" y="525" font-family="'Segoe UI', Roboto, sans-serif" font-size="15" fill="rgba(245, 248, 255, 0.7)" text-anchor="middle">
+    Covering HTML5 Semantic Structure, CSS3 Flexbox/Grid, Responsive Layouts &amp; Vanilla JavaScript DOM APIs
+  </text>
+
+  <!-- Verification and Seal Section -->
+  <g transform="translate(600, 640)">
+    <!-- Decorative Tech Seal -->
+    <circle cx="0" cy="0" r="48" fill="rgba(8, 123, 255, 0.15)" stroke="#00D9FF" stroke-width="2" stroke-dasharray="4 2"/>
+    <circle cx="0" cy="0" r="38" fill="none" stroke="rgba(113, 59, 255, 0.5)" stroke-width="1.5"/>
+    <text x="0" y="-6" font-family="'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#00D9FF" text-anchor="middle">SAMPLE</text>
+    <text x="0" y="10" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="800" fill="#FFE066" text-anchor="middle">SEAL</text>
+    <text x="0" y="24" font-family="'Segoe UI', sans-serif" font-size="8" fill="rgba(245, 248, 255, 0.6)" text-anchor="middle">VERIFIED</text>
+  </g>
+
+  <!-- Left: Issue Date -->
+  <g transform="translate(260, 640)">
+    <line x1="-120" y1="10" x2="120" y2="10" stroke="rgba(245, 248, 255, 0.3)" stroke-width="1"/>
+    <text x="0" y="32" font-family="'Segoe UI', sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">2024 (DEMO)</text>
+    <text x="0" y="50" font-family="'Courier New', monospace" font-size="11" fill="rgba(245, 248, 255, 0.5)" text-anchor="middle">ISSUE DATE</text>
+  </g>
+
+  <!-- Right: Credential ID -->
+  <g transform="translate(940, 640)">
+    <line x1="-120" y1="10" x2="120" y2="10" stroke="rgba(245, 248, 255, 0.3)" stroke-width="1"/>
+    <text x="0" y="32" font-family="'Courier New', monospace" font-size="14" font-weight="800" fill="#00D9FF" text-anchor="middle">DEMO-WD-2024-SAMPLE</text>
+    <text x="0" y="50" font-family="'Courier New', monospace" font-size="11" fill="rgba(245, 248, 255, 0.5)" text-anchor="middle">CREDENTIAL ID</text>
+  </g>
+
+  <!-- Footer Watermark Bar -->
+  <rect x="60" y="745" width="1080" height="30" fill="rgba(255, 77, 109, 0.08)" rx="4"/>
+  <text x="600" y="765" font-family="'Segoe UI', sans-serif" font-size="12" font-weight="600" fill="rgba(255, 128, 150, 0.9)" text-anchor="middle" letter-spacing="1">
+    SAMPLE RECORD FOR PREVIEW PURPOSES • NOT AFFILIATED WITH AN ACCREDITED INSTITUTION • EASY TO DELETE VIA ADMIN PANEL
+  </text>
+</svg>

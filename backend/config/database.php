@@ -168,6 +168,44 @@ class Database {
                 KEY `education_order_idx` (`display_order` ASC, `created_at` DESC),
                 KEY `education_current_idx` (`is_current`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+            CREATE TABLE IF NOT EXISTS `mubdev_certificates` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `title` VARCHAR(250) NOT NULL,
+                `issuer` VARCHAR(200) NOT NULL,
+                `issue_date` VARCHAR(80) NOT NULL,
+                `credential_id` VARCHAR(120) DEFAULT NULL,
+                `verification_url` VARCHAR(500) DEFAULT NULL,
+                `image_url` VARCHAR(500) DEFAULT NULL,
+                `skills` TEXT DEFAULT NULL,
+                `description` TEXT DEFAULT NULL,
+                `display_order` INT NOT NULL DEFAULT 0,
+                `featured` TINYINT(1) NOT NULL DEFAULT 1,
+                `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                KEY `certificates_order_idx` (`display_order` ASC, `created_at` DESC),
+                KEY `certificates_issuer_idx` (`issuer`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+            CREATE TABLE IF NOT EXISTS `mubdev_achievements` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `title` VARCHAR(250) NOT NULL,
+                `category` VARCHAR(100) NOT NULL DEFAULT 'Technical Milestone',
+                `organization` VARCHAR(200) DEFAULT NULL,
+                `date` VARCHAR(80) DEFAULT NULL,
+                `description` TEXT NOT NULL,
+                `image_url` VARCHAR(500) DEFAULT NULL,
+                `link_url` VARCHAR(500) DEFAULT NULL,
+                `highlights` TEXT DEFAULT NULL,
+                `display_order` INT NOT NULL DEFAULT 0,
+                `featured` TINYINT(1) NOT NULL DEFAULT 1,
+                `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                KEY `achievements_order_idx` (`display_order` ASC, `created_at` DESC),
+                KEY `achievements_category_idx` (`category`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ");
 
         // Verify administrator account exists
@@ -195,6 +233,18 @@ class Database {
         $eduCount = (int)$pdo->query("SELECT COUNT(*) FROM `mubdev_education`")->fetchColumn();
         if ($eduCount === 0) {
             self::seedDefaultEducation($pdo);
+        }
+
+        // Verify and seed initial certificates if table is empty
+        $certCount = (int)$pdo->query("SELECT COUNT(*) FROM `mubdev_certificates`")->fetchColumn();
+        if ($certCount === 0) {
+            self::seedDefaultCertificates($pdo);
+        }
+
+        // Verify and seed initial achievements if table is empty
+        $achieveCount = (int)$pdo->query("SELECT COUNT(*) FROM `mubdev_achievements`")->fetchColumn();
+        if ($achieveCount === 0) {
+            self::seedDefaultAchievements($pdo);
         }
     }
 
@@ -267,6 +317,42 @@ class Database {
             );
             CREATE INDEX IF NOT EXISTS education_order_idx ON mubdev_education(display_order ASC, created_at DESC);
             CREATE INDEX IF NOT EXISTS education_current_idx ON mubdev_education(is_current);
+
+            CREATE TABLE IF NOT EXISTS mubdev_certificates (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                issuer TEXT NOT NULL,
+                issue_date TEXT NOT NULL,
+                credential_id TEXT,
+                verification_url TEXT,
+                image_url TEXT,
+                skills TEXT,
+                description TEXT,
+                display_order INTEGER DEFAULT 0,
+                featured INTEGER DEFAULT 1,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS certificates_order_idx ON mubdev_certificates(display_order ASC, created_at DESC);
+            CREATE INDEX IF NOT EXISTS certificates_issuer_idx ON mubdev_certificates(issuer);
+
+            CREATE TABLE IF NOT EXISTS mubdev_achievements (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                category TEXT DEFAULT 'Technical Milestone',
+                organization TEXT,
+                date TEXT,
+                description TEXT NOT NULL,
+                image_url TEXT,
+                link_url TEXT,
+                highlights TEXT,
+                display_order INTEGER DEFAULT 0,
+                featured INTEGER DEFAULT 1,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS achievements_order_idx ON mubdev_achievements(display_order ASC, created_at DESC);
+            CREATE INDEX IF NOT EXISTS achievements_category_idx ON mubdev_achievements(category);
         ");
 
         // Ensure default administrator: admin / AdminMubdev2026!
@@ -299,6 +385,18 @@ class Database {
         $eduCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_education")->fetchColumn();
         if ($eduCount === 0) {
             self::seedDefaultEducation($pdo);
+        }
+
+        // Seed default certificates if empty
+        $certCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_certificates")->fetchColumn();
+        if ($certCount === 0) {
+            self::seedDefaultCertificates($pdo);
+        }
+
+        // Seed default achievements if empty
+        $achieveCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_achievements")->fetchColumn();
+        if ($achieveCount === 0) {
+            self::seedDefaultAchievements($pdo);
         }
     }
 
@@ -504,6 +602,204 @@ class Database {
                     ':highlights' => $edu['highlights'],
                     ':display_order' => $edu['display_order'],
                     ':created_at' => $edu['created_at']
+                ]);
+            } catch (Throwable $e) {
+                // Ignore if record already exists
+            }
+        }
+    }
+
+    /**
+     * Seeds initial authentic certificates with database-agnostic prepared statements.
+     */
+    private static function seedDefaultCertificates(PDO $pdo): void {
+        $stmt = $pdo->prepare("
+            INSERT INTO mubdev_certificates 
+            (id, title, issuer, issue_date, credential_id, verification_url, image_url, skills, description, display_order, featured, created_at)
+            VALUES 
+            (:id, :title, :issuer, :issue_date, :credential_id, :verification_url, :image_url, :skills, :description, :display_order, :featured, :created_at)
+        ");
+
+        $defaultCertificates = [
+            [
+                'id' => 1,
+                'title' => 'Udacity Web Development Program Certificate',
+                'issuer' => 'Udacity',
+                'issue_date' => '2024',
+                'credential_id' => 'UDACITY-WD-2024',
+                'verification_url' => 'https://www.udacity.com',
+                'image_url' => null,
+                'skills' => json_encode(['Semantic HTML5', 'Modern CSS Layouts', 'Vanilla JavaScript & DOM', 'Web APIs']),
+                'description' => 'Intensive curriculum focused on building responsive, performant web applications with standards-compliant HTML5, modular CSS layouts, dynamic DOM manipulation, and asynchronous REST APIs.',
+                'display_order' => 1,
+                'featured' => 1,
+                'created_at' => '2026-11-01 12:00:00'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Software Engineering Coursework Credential',
+                'issuer' => 'Haramaya University',
+                'issue_date' => '2024',
+                'credential_id' => 'HU-SE-3RDYEAR',
+                'verification_url' => 'https://www.haramaya.edu.et',
+                'image_url' => null,
+                'skills' => json_encode(['C++ & OOP', 'Relational Databases', 'Data Structures', 'Software Engineering Principles']),
+                'description' => 'Verified academic transcript and curriculum achievements in Object-Oriented Programming, Data Structures, Relational Database Modeling, and Software Engineering Systems.',
+                'display_order' => 2,
+                'featured' => 1,
+                'created_at' => '2026-11-02 14:00:00'
+            ],
+            [
+                'id' => 3,
+                'title' => '[SAMPLE / DEMO] Web Development Professional Certificate',
+                'issuer' => 'Demo Training Institute (SAMPLE)',
+                'issue_date' => '2024 (DEMO)',
+                'credential_id' => 'DEMO-WD-2024-SAMPLE',
+                'verification_url' => 'https://example.com/verify/demo-wd',
+                'image_url' => '/uploads/certificates/demo_cert_webdev.svg',
+                'skills' => json_encode(['HTML5 (Demo)', 'CSS3 (Demo)', 'JavaScript (Demo)', 'Responsive Design']),
+                'description' => '[SAMPLE / DEMO RECORD] Demonstrates completed coursework in frontend web development architectures, layout modeling, and interactive DOM development.',
+                'display_order' => 3,
+                'featured' => 1,
+                'created_at' => '2026-11-03 10:00:00'
+            ],
+            [
+                'id' => 4,
+                'title' => '[SAMPLE / DEMO] Python Programming & Backend Foundations',
+                'issuer' => 'Demo Technology Academy (SAMPLE)',
+                'issue_date' => '2024 (DEMO)',
+                'credential_id' => 'DEMO-PY-2024-SAMPLE',
+                'verification_url' => 'https://example.com/verify/demo-py',
+                'image_url' => '/uploads/certificates/demo_cert_python.svg',
+                'skills' => json_encode(['Python (Demo)', 'Data Structures (Demo)', 'Algorithms', 'Backend Scripting']),
+                'description' => '[SAMPLE / DEMO RECORD] Demonstrates foundational programming in Python, object-oriented concepts, algorithm optimization, and server-side data processing.',
+                'display_order' => 4,
+                'featured' => 1,
+                'created_at' => '2026-11-04 11:30:00'
+            ],
+            [
+                'id' => 5,
+                'title' => '[SAMPLE / DEMO] UI/UX Design & Digital Interface Principles',
+                'issuer' => 'Demo Creative Academy (SAMPLE)',
+                'issue_date' => '2024 (DEMO)',
+                'credential_id' => 'DEMO-UIUX-2024-SAMPLE',
+                'verification_url' => 'https://example.com/verify/demo-uiux',
+                'image_url' => '/uploads/certificates/demo_cert_uiux.svg',
+                'skills' => json_encode(['Wireframing (Demo)', 'Figma Prototyping', 'User Research', 'Visual Systems']),
+                'description' => '[SAMPLE / DEMO RECORD] Demonstrates foundational principles of modern user interface design, user journey mapping, design systems, and responsive wireframing.',
+                'display_order' => 5,
+                'featured' => 1,
+                'created_at' => '2026-11-05 14:00:00'
+            ]
+        ];
+
+        foreach ($defaultCertificates as $cert) {
+            try {
+                $stmt->execute([
+                    ':id' => $cert['id'],
+                    ':title' => $cert['title'],
+                    ':issuer' => $cert['issuer'],
+                    ':issue_date' => $cert['issue_date'],
+                    ':credential_id' => $cert['credential_id'],
+                    ':verification_url' => $cert['verification_url'],
+                    ':image_url' => $cert['image_url'],
+                    ':skills' => $cert['skills'],
+                    ':description' => $cert['description'],
+                    ':display_order' => $cert['display_order'],
+                    ':featured' => $cert['featured'],
+                    ':created_at' => $cert['created_at']
+                ]);
+            } catch (Throwable $e) {
+                // Ignore if record already exists
+            }
+        }
+    }
+
+    /**
+     * Seeds initial authentic achievements, competition milestones, and technical recognitions.
+     */
+    private static function seedDefaultAchievements(PDO $pdo): void {
+        $stmt = $pdo->prepare("
+            INSERT INTO mubdev_achievements 
+            (id, title, category, organization, date, description, image_url, link_url, highlights, display_order, featured, created_at)
+            VALUES 
+            (:id, :title, :category, :organization, :date, :description, :image_url, :link_url, :highlights, :display_order, :featured, :created_at)
+        ");
+
+        $defaultAchievements = [
+            [
+                'id' => 1,
+                'title' => 'Full-Stack Architecture & Backend Systems Milestone',
+                'category' => 'Technical Milestone',
+                'organization' => 'Self-Directed Exploration & Research',
+                'date' => '2023 - Present',
+                'description' => 'Deepening full-stack engineering capabilities with Django REST Framework, PHP backend fundamentals, MySQL relational database architecture, and scalable system design.',
+                'image_url' => null,
+                'link_url' => null,
+                'highlights' => json_encode(['Django REST Framework', 'PHP server-side scripting', 'MySQL database modeling', 'API architecture']),
+                'display_order' => 1,
+                'featured' => 1,
+                'created_at' => '2026-11-01 10:00:00'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Applied Software Practice & Algorithmic Problem Solving',
+                'category' => 'Applied Milestone',
+                'organization' => 'Independent Lab & University Practice',
+                'date' => '2023 - Present',
+                'description' => 'Engineering practice projects, translating theoretical concepts from coursework into real code, algorithmic problem solving in C++, and modern frontend interfaces.',
+                'image_url' => null,
+                'link_url' => null,
+                'highlights' => json_encode(['React component engineering', 'Full-stack prototyping', 'Algorithmic problem solving']),
+                'display_order' => 2,
+                'featured' => 1,
+                'created_at' => '2026-11-02 11:30:00'
+            ],
+            [
+                'id' => 3,
+                'title' => 'Academic Standing & Software Engineering Curriculum Honors',
+                'category' => 'Academic Recognition',
+                'organization' => 'Haramaya University',
+                'date' => '2024',
+                'description' => 'Maintaining strong academic standing across foundational and advanced software engineering coursework including Object-Oriented Design, Database Systems, and Systems Programming.',
+                'image_url' => null,
+                'link_url' => 'https://www.haramaya.edu.et',
+                'highlights' => json_encode(['C++ & Systems Programming', 'Object-Oriented Design', 'Relational Database Modeling']),
+                'display_order' => 3,
+                'featured' => 1,
+                'created_at' => '2026-11-03 14:00:00'
+            ],
+            [
+                'id' => 4,
+                'title' => 'Udacity Web Development Program Completion',
+                'category' => 'Technical Milestone',
+                'organization' => 'Udacity',
+                'date' => '2024',
+                'description' => 'Successfully completed comprehensive coursework in responsive web architecture, modular JavaScript programming, DOM event models, and asynchronous REST APIs.',
+                'image_url' => null,
+                'link_url' => 'https://www.udacity.com',
+                'highlights' => json_encode(['Responsive web design', 'Vanilla JavaScript & DOM manipulation', 'Modern CSS layout models']),
+                'display_order' => 4,
+                'featured' => 1,
+                'created_at' => '2026-11-04 16:00:00'
+            ]
+        ];
+
+        foreach ($defaultAchievements as $item) {
+            try {
+                $stmt->execute([
+                    ':id' => $item['id'],
+                    ':title' => $item['title'],
+                    ':category' => $item['category'],
+                    ':organization' => $item['organization'],
+                    ':date' => $item['date'],
+                    ':description' => $item['description'],
+                    ':image_url' => $item['image_url'],
+                    ':link_url' => $item['link_url'],
+                    ':highlights' => $item['highlights'],
+                    ':display_order' => $item['display_order'],
+                    ':featured' => $item['featured'],
+                    ':created_at' => $item['created_at']
                 ]);
             } catch (Throwable $e) {
                 // Ignore if record already exists

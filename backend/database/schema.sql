@@ -95,3 +95,49 @@ CREATE TABLE IF NOT EXISTS `mubdev_education` (
   KEY `education_order_idx` (`display_order` ASC, `created_at` DESC),
   KEY `education_current_idx` (`is_current`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------------------------
+-- Table 5: mubdev_certificates
+-- Stores verified certificates, credentials, and course completions
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mubdev_certificates` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(250) NOT NULL,
+  `issuer` VARCHAR(200) NOT NULL,
+  `issue_date` VARCHAR(80) NOT NULL,
+  `credential_id` VARCHAR(120) DEFAULT NULL,
+  `verification_url` VARCHAR(500) DEFAULT NULL,
+  `image_url` VARCHAR(500) DEFAULT NULL,
+  `skills` TEXT DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `display_order` INT NOT NULL DEFAULT 0,
+  `featured` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `certificates_order_idx` (`display_order` ASC, `created_at` DESC),
+  KEY `certificates_issuer_idx` (`issuer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------------------------
+-- Table 6: mubdev_achievements
+-- Stores competitions, awards, recognitions, and major technical milestones
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mubdev_achievements` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(250) NOT NULL,
+  `category` VARCHAR(100) NOT NULL DEFAULT 'Technical Milestone',
+  `organization` VARCHAR(200) DEFAULT NULL,
+  `date` VARCHAR(80) DEFAULT NULL,
+  `description` TEXT NOT NULL,
+  `image_url` VARCHAR(500) DEFAULT NULL,
+  `link_url` VARCHAR(500) DEFAULT NULL,
+  `highlights` TEXT DEFAULT NULL,
+  `display_order` INT NOT NULL DEFAULT 0,
+  `featured` TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `achievements_order_idx` (`display_order` ASC, `created_at` DESC),
+  KEY `achievements_category_idx` (`category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
