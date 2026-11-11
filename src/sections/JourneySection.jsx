@@ -110,54 +110,56 @@ export const JourneySection = () => {
 
       {/* Subsection Navigation Tabs */}
       <MotionReveal direction="up" delay={0.15}>
-        <div className="journey-tabs-container" role="tablist" aria-label="Journey Subsections">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'all'}
-            className={`journey-tab-btn ${activeTab === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveTab('all')}
-          >
-            <Sparkles size={16} />
-            <span>All Journey</span>
-            <span className="journey-tab-badge">{totalCount}</span>
-          </button>
+        <div className="journey-tabs-wrapper">
+          <div className="journey-tabs-container" role="tablist" aria-label="Journey Subsections">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'all'}
+              className={`journey-tab-btn ${activeTab === 'all' ? 'active' : ''}`}
+              onClick={() => setActiveTab('all')}
+            >
+              <Sparkles size={15} className="journey-tab-icon" />
+              <span className="journey-tab-label">All Journey</span>
+              <span className="journey-tab-badge">{totalCount}</span>
+            </button>
 
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'education'}
-            className={`journey-tab-btn ${activeTab === 'education' ? 'active' : ''}`}
-            onClick={() => setActiveTab('education')}
-          >
-            <GraduationCap size={16} />
-            <span>Education</span>
-            <span className="journey-tab-badge">{educationList.length}</span>
-          </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'education'}
+              className={`journey-tab-btn ${activeTab === 'education' ? 'active' : ''}`}
+              onClick={() => setActiveTab('education')}
+            >
+              <GraduationCap size={15} className="journey-tab-icon" />
+              <span className="journey-tab-label">Education</span>
+              <span className="journey-tab-badge">{educationList.length}</span>
+            </button>
 
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'certifications'}
-            className={`journey-tab-btn ${activeTab === 'certifications' ? 'active' : ''}`}
-            onClick={() => setActiveTab('certifications')}
-          >
-            <Award size={16} />
-            <span>Certifications</span>
-            <span className="journey-tab-badge">{certificatesList.length}</span>
-          </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'certifications'}
+              className={`journey-tab-btn ${activeTab === 'certifications' ? 'active' : ''}`}
+              onClick={() => setActiveTab('certifications')}
+            >
+              <Award size={15} className="journey-tab-icon" />
+              <span className="journey-tab-label">Certifications</span>
+              <span className="journey-tab-badge">{certificatesList.length}</span>
+            </button>
 
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'achievements'}
-            className={`journey-tab-btn ${activeTab === 'achievements' ? 'active' : ''}`}
-            onClick={() => setActiveTab('achievements')}
-          >
-            <Trophy size={16} />
-            <span>Achievements</span>
-            <span className="journey-tab-badge">{achievementsList.length}</span>
-          </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'achievements'}
+              className={`journey-tab-btn ${activeTab === 'achievements' ? 'active' : ''}`}
+              onClick={() => setActiveTab('achievements')}
+            >
+              <Trophy size={15} className="journey-tab-icon" />
+              <span className="journey-tab-label">Achievements</span>
+              <span className="journey-tab-badge">{achievementsList.length}</span>
+            </button>
+          </div>
         </div>
       </MotionReveal>
 
@@ -208,16 +210,16 @@ export const JourneySection = () => {
                 <MotionReveal key={cert.id || `cert-${index}`} direction="up" delay={0.1 * (index + 1)}>
                   <GlassCard variant="default" glowColor={isDemo ? 'violet' : 'cyan'} className="certificate-card">
                     <div>
-                      {/* Optional Certificate Image Thumbnail */}
+                      {/* Optional Certificate Image Thumbnail (Compact 115px) */}
                       {cert.image_url && (
                         <div 
                           style={{
                             position: 'relative',
                             width: '100%',
-                            height: '160px',
+                            height: '115px',
                             borderRadius: '8px',
                             overflow: 'hidden',
-                            marginBottom: '1rem',
+                            marginBottom: '0.75rem',
                             border: '1px solid rgba(0, 217, 255, 0.25)',
                             background: 'rgba(2, 8, 23, 0.7)',
                             cursor: 'pointer'
@@ -240,84 +242,98 @@ export const JourneySection = () => {
                           />
                           <div style={{
                             position: 'absolute',
-                            bottom: '8px',
-                            right: '8px',
-                            background: 'rgba(2, 8, 23, 0.85)',
-                            padding: '0.25rem 0.5rem',
+                            bottom: '6px',
+                            right: '6px',
+                            background: 'rgba(2, 8, 23, 0.88)',
+                            padding: '0.2rem 0.45rem',
                             borderRadius: '4px',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '0.35rem',
-                            fontSize: '0.72rem',
+                            gap: '0.3rem',
+                            fontSize: '0.68rem',
                             color: 'var(--color-neon-cyan)'
                           }}>
-                            <Eye size={12} />
+                            <Eye size={11} />
                             <span>Preview</span>
                           </div>
                         </div>
                       )}
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.85rem' }}>
-                        <span className={`badge ${isDemo ? 'badge-violet' : 'badge-cyan'}`}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <span className={`badge ${isDemo ? 'badge-violet' : 'badge-cyan'}`} style={{ fontSize: '0.68rem', padding: '0.15rem 0.5rem' }}>
                           {cert.issuer}
                         </span>
                         {date && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)' }}>
-                            <Calendar size={13} />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)' }}>
+                            <Calendar size={12} />
                             <span>{date}</span>
                           </div>
                         )}
                       </div>
 
-                      <h4 style={{ fontSize: 'var(--text-base)', color: 'var(--color-white)', marginBottom: '0.4rem', lineHeight: 1.4, fontWeight: 700 }}>
+                      <h4 style={{ fontSize: '0.94rem', color: 'var(--color-white)', marginBottom: '0.25rem', lineHeight: 1.35, fontWeight: 600 }}>
                         {cert.title}
                       </h4>
 
                       {certId && (
-                        <p style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--color-neon-cyan)', marginBottom: '0.75rem' }}>
+                        <p style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--color-neon-cyan)', marginBottom: '0.5rem' }}>
                           ID: {certId}
                         </p>
                       )}
 
-                      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1rem' }}>
+                      <p style={{
+                        fontSize: '0.78rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: 1.45,
+                        marginBottom: '0.75rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}>
                         {cert.description}
                       </p>
                     </div>
 
                     <div>
                       {skills.length > 0 && (
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                          {skills.map((skill) => (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '0.75rem' }}>
+                          {skills.slice(0, 3).map((skill) => (
                             <span
                               key={skill}
                               style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '0.3rem',
-                                fontSize: '0.72rem',
+                                gap: '0.2rem',
+                                fontSize: '0.68rem',
                                 color: 'var(--text-secondary)',
                                 background: 'rgba(2, 8, 23, 0.55)',
-                                padding: '0.2rem 0.55rem',
+                                padding: '0.15rem 0.45rem',
                                 borderRadius: 'var(--radius-xs)',
                                 border: '1px solid rgba(0, 217, 255, 0.15)'
                               }}
                             >
-                              <CheckCircle2 size={11} color="var(--color-neon-cyan)" />
+                              <CheckCircle2 size={10} color="var(--color-neon-cyan)" />
                               {skill}
                             </span>
                           ))}
+                          {skills.length > 3 && (
+                            <span style={{ fontSize: '0.65rem', color: 'rgba(245, 248, 255, 0.5)', padding: '0.15rem 0.35rem', alignSelf: 'center' }}>
+                              +{skills.length - 3} more
+                            </span>
+                          )}
                         </div>
                       )}
 
-                      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
                         {cert.image_url && (
                           <button
                             type="button"
                             onClick={() => setPreviewImage({ url: cert.image_url, title: cert.title })}
                             className="certificate-link-btn"
-                            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: '0.75rem' }}
                           >
-                            <Eye size={14} />
+                            <Eye size={13} />
                             <span>View Mockup</span>
                           </button>
                         )}
@@ -328,8 +344,9 @@ export const JourneySection = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="certificate-link-btn"
+                            style={{ fontSize: '0.75rem' }}
                           >
-                            <ExternalLink size={14} />
+                            <ExternalLink size={13} />
                             <span>Verify Credential</span>
                           </a>
                         )}
@@ -364,55 +381,69 @@ export const JourneySection = () => {
                 <MotionReveal key={achieve.id || `achieve-${index}`} direction="up" delay={0.1 * (index + 1)}>
                   <GlassCard variant="default" glowColor="violet" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.85rem' }}>
-                        <span className="badge badge-violet">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <span className="badge badge-violet" style={{ fontSize: '0.68rem', padding: '0.15rem 0.5rem' }}>
                           {achieve.category || 'Technical Milestone'}
                         </span>
                         {achieve.date && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)' }}>
-                            <Calendar size={13} />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)' }}>
+                            <Calendar size={12} />
                             <span>{achieve.date}</span>
                           </div>
                         )}
                       </div>
 
-                      <h4 style={{ fontSize: 'var(--text-base)', color: 'var(--color-white)', marginBottom: '0.35rem', lineHeight: 1.4, fontWeight: 700 }}>
+                      <h4 style={{ fontSize: '0.94rem', color: 'var(--color-white)', marginBottom: '0.25rem', lineHeight: 1.35, fontWeight: 600 }}>
                         {achieve.title}
                       </h4>
 
                       {achieve.organization && (
-                        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-neon-cyan)', marginBottom: '0.75rem', fontWeight: 600 }}>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-neon-cyan)', marginBottom: '0.5rem', fontWeight: 600 }}>
                           {achieve.organization}
                         </p>
                       )}
 
-                      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1rem' }}>
+                      <p style={{
+                        fontSize: '0.78rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: 1.45,
+                        marginBottom: '0.75rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}>
                         {achieve.description}
                       </p>
                     </div>
 
                     <div>
                       {highlights.length > 0 && (
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: link ? '1.25rem' : '0' }}>
-                          {highlights.map((item) => (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: link ? '0.75rem' : '0' }}>
+                          {highlights.slice(0, 3).map((item) => (
                             <span
                               key={item}
                               style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '0.3rem',
-                                fontSize: '0.72rem',
+                                gap: '0.2rem',
+                                fontSize: '0.68rem',
                                 color: 'var(--text-secondary)',
                                 background: 'rgba(2, 8, 23, 0.55)',
-                                padding: '0.2rem 0.55rem',
+                                padding: '0.15rem 0.45rem',
                                 borderRadius: 'var(--radius-xs)',
                                 border: '1px solid rgba(113, 59, 255, 0.25)'
                               }}
                             >
-                              <CheckCircle2 size={11} color="var(--color-violet)" />
+                              <CheckCircle2 size={10} color="var(--color-violet)" />
                               {item}
                             </span>
                           ))}
+                          {highlights.length > 3 && (
+                            <span style={{ fontSize: '0.65rem', color: 'rgba(245, 248, 255, 0.5)', padding: '0.15rem 0.35rem', alignSelf: 'center' }}>
+                              +{highlights.length - 3} more
+                            </span>
+                          )}
                         </div>
                       )}
 
@@ -422,9 +453,9 @@ export const JourneySection = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="certificate-link-btn"
-                          style={{ color: 'var(--color-violet)' }}
+                          style={{ color: 'var(--color-violet)', fontSize: '0.75rem' }}
                         >
-                          <ExternalLink size={14} />
+                          <ExternalLink size={13} />
                           <span>View Detail</span>
                         </a>
                       )}

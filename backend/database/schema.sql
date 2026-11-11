@@ -141,3 +141,20 @@ CREATE TABLE IF NOT EXISTS `mubdev_achievements` (
   KEY `achievements_order_idx` (`display_order` ASC, `created_at` DESC),
   KEY `achievements_category_idx` (`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------------------------
+-- Table 7: mubdev_site_images
+-- Stores core website images (Hero profile photo, About photo, branding, and metadata)
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mubdev_site_images` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `image_key` VARCHAR(80) NOT NULL UNIQUE,
+  `section` VARCHAR(80) NOT NULL,
+  `title` VARCHAR(150) NOT NULL,
+  `image_url` VARCHAR(500) NOT NULL,
+  `aspect_ratio` VARCHAR(20) DEFAULT '1:1',
+  `alt_text` VARCHAR(255) DEFAULT '',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_site_images_key` (`image_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

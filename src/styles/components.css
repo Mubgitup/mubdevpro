@@ -1174,6 +1174,169 @@
   box-shadow: 0 0 6px var(--color-neon-cyan);
 }
 
+/* Journey Subsection Navigation Tabs (Glassmorphic Pill Bar) */
+.journey-tabs-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto var(--space-2xl);
+  padding: 2px var(--space-sm) 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.journey-tabs-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.journey-tabs-container {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(7, 27, 61, 0.58);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 5px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  position: relative;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.journey-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.48rem 1.1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: rgba(245, 248, 255, 0.7);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  outline: none;
+}
+
+.journey-tab-btn:hover:not(.active) {
+  color: #ffffff;
+  background: rgba(8, 123, 255, 0.12);
+  border-color: rgba(0, 217, 255, 0.22);
+}
+
+.journey-tab-btn.active {
+  color: #ffffff;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(8, 123, 255, 0.3) 0%, rgba(0, 217, 255, 0.18) 100%);
+  border-color: rgba(0, 217, 255, 0.45);
+  box-shadow: 0 2px 14px rgba(0, 217, 255, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.18);
+}
+
+.journey-tab-btn:focus-visible {
+  outline: 2px solid var(--color-neon-cyan);
+  outline-offset: 2px;
+}
+
+.journey-tab-icon {
+  flex-shrink: 0;
+  transition: all 0.22s ease;
+  color: rgba(245, 248, 255, 0.55);
+}
+
+.journey-tab-btn:hover .journey-tab-icon {
+  color: var(--color-neon-cyan);
+}
+
+.journey-tab-btn.active .journey-tab-icon {
+  color: var(--color-neon-cyan);
+  filter: drop-shadow(0 0 6px rgba(0, 217, 255, 0.6));
+}
+
+.journey-tab-label {
+  letter-spacing: 0.01em;
+  transition: color 0.22s ease;
+}
+
+.journey-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  background: rgba(245, 248, 255, 0.08);
+  color: rgba(245, 248, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.22s ease;
+  line-height: 1;
+}
+
+.journey-tab-btn:hover .journey-tab-badge {
+  background: rgba(0, 217, 255, 0.14);
+  color: var(--color-neon-cyan);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.journey-tab-btn.active .journey-tab-badge {
+  background: rgba(0, 217, 255, 0.22);
+  color: #00D9FF;
+  border-color: rgba(0, 217, 255, 0.45);
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.25);
+}
+
+@media (max-width: 640px) {
+  .journey-tabs-wrapper {
+    justify-content: flex-start;
+    padding-bottom: 6px;
+  }
+
+  .journey-tabs-container {
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .journey-tab-btn {
+    padding: 0.42rem 0.8rem;
+    font-size: 0.78rem;
+    gap: 0.35rem;
+  }
+
+  .journey-tab-badge {
+    min-width: 18px;
+    height: 16px;
+    font-size: 0.65rem;
+    padding: 0 4px;
+  }
+}
+
+.certificates-grid,
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .certificates-grid,
+  .achievements-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 /* ==========================================================================
    CONTACT SECTION STYLES
    ========================================================================== */

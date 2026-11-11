@@ -1,12 +1,38 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Button } from '../components/common/Button';
 import { BRAND_PROFILE, ASSET_PATHS } from '../data/brandConfig';
 import { GraduationCap, Code2, Compass, ArrowRight, Mail, Sparkles, Terminal } from 'lucide-react';
+import { api } from '../services/api';
 
 export const HeroSection = () => {
   const cardRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [heroImage, setHeroImage] = useState(() => {
+    return localStorage.getItem('mubdev_hero_profile') || ASSET_PATHS.heroPortrait || ASSET_PATHS.placeholderPortrait;
+  });
+
+  useEffect(() => {
+    if (api?.siteImages?.list) {
+      api.siteImages.list()
+        .then((res) => {
+          const imgUrl = res?.data?.hero_profile?.image_url;
+          if (imgUrl) {
+            setHeroImage(imgUrl);
+            localStorage.setItem('mubdev_hero_profile', imgUrl);
+          }
+        })
+        .catch(() => {});
+    }
+
+    const handleStorage = (e) => {
+      if (e.key === 'mubdev_hero_profile' && e.newValue) {
+        setHeroImage(e.newValue);
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   // 3D Tilt Spring Physics
   const x = useMotionValue(0);
@@ -73,7 +99,7 @@ export const HeroSection = () => {
       <div className="hero-ambient-backdrop" aria-hidden="true">
         <div
           className="hero-backdrop-image"
-          style={{ backgroundImage: `url(${ASSET_PATHS.heroPortrait || ASSET_PATHS.placeholderPortrait})` }}
+          style={{ backgroundImage: `url(${heroImage})` }}
         />
         <div className="hero-backdrop-glow" />
       </div>
@@ -152,7 +178,7 @@ export const HeroSection = () => {
               {/* Seamless Blended Tall 3D Portrait (0px Z) */}
               <div className="hero-portrait-blended" style={{ transform: 'translateZ(0px)' }}>
                 <img
-                  src={ASSET_PATHS.heroPortrait || ASSET_PATHS.placeholderPortrait}
+                  src={heroImage}
                   alt="Mubarek Hussein - Mubdev Software Developer"
                   className="hero-portrait-img"
                   width="1024"

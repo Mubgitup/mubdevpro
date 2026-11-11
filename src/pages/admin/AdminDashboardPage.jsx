@@ -272,6 +272,7 @@ export const AdminDashboardPage = () => {
           { title: 'Education Track', to: '/admin/education', desc: 'Haramaya University milestones' },
           { title: 'Certificates', to: '/admin/certificates', desc: 'Credentials & coursework' },
           { title: 'Achievements', to: '/admin/achievements', desc: 'Awards & technical milestones' },
+          { title: 'Image & Media Manager', to: '/admin/images', desc: 'Crop, upload & customize portfolio photos' },
           { title: 'Social Media', to: '/admin/social-media', desc: 'GitHub, Telegram, Instagram, TikTok' },
           { title: 'Settings', to: '/admin/settings', desc: 'API health & credentials' },
         ].map((item) => (

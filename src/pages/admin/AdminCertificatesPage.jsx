@@ -398,47 +398,47 @@ export const AdminCertificatesPage = () => {
         </div>
       )}
 
-      {/* Metrics & Statistics Bar */}
+      {/* Metrics & Statistics Bar (Compact) */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '1rem',
-        marginBottom: '1.5rem'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '0.75rem',
+        marginBottom: '1.25rem'
       }}>
-        <div className="admin-card" style={{ padding: '1.1rem 1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'rgba(245, 248, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div className="admin-card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.55)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Total Certificates
-            </span>
-            <Award size={18} color="var(--color-neon-cyan, #00D9FF)" />
+            </div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', marginTop: '0.15rem' }}>
+              {stats.total}
+            </div>
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', marginTop: '0.4rem' }}>
-            {stats.total}
-          </div>
+          <Award size={20} color="var(--color-neon-cyan, #00D9FF)" />
         </div>
 
-        <div className="admin-card" style={{ padding: '1.1rem 1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'rgba(245, 248, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Verified Credentials
-            </span>
-            <ShieldCheck size={18} color="#34D399" />
+        <div className="admin-card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.55)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Verified
+            </div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#34D399', marginTop: '0.15rem' }}>
+              {stats.verified}
+            </div>
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#34D399', marginTop: '0.4rem' }}>
-            {stats.verified}
-          </div>
+          <ShieldCheck size={20} color="#34D399" />
         </div>
 
-        <div className="admin-card" style={{ padding: '1.1rem 1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.8rem', color: 'rgba(245, 248, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Organizations / Issuers
-            </span>
-            <Building size={18} color="var(--color-electric-blue, #087BFF)" />
+        <div className="admin-card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.55)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Issuers
+            </div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#087BFF', marginTop: '0.15rem' }}>
+              {stats.issuers}
+            </div>
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#087BFF', marginTop: '0.4rem' }}>
-            {stats.issuers}
-          </div>
+          <Building size={20} color="var(--color-electric-blue, #087BFF)" />
         </div>
       </div>
 
@@ -589,15 +589,17 @@ export const AdminCertificatesPage = () => {
           </div>
         </div>
       ) : viewMode === 'grid' ? (
-        /* GRID CARDS VIEW */
+        /* COMPACT GRID CARDS VIEW */
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-          gap: '1.5rem'
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '1rem'
         }}>
           {certs.map((cert) => {
             const isPdf = cert.image_url && cert.image_url.endsWith('.pdf');
             const hasFile = Boolean(cert.image_url);
+            const skills = Array.isArray(cert.skills) ? cert.skills : [];
+            const isDemo = cert.title?.includes('SAMPLE') || cert.title?.includes('DEMO') || cert.issuer?.includes('Demo');
 
             return (
               <div 
@@ -608,17 +610,32 @@ export const AdminCertificatesPage = () => {
                   flexDirection: 'column',
                   overflow: 'hidden',
                   padding: 0,
-                  border: '1px solid rgba(0, 217, 255, 0.22)'
+                  borderRadius: '11px',
+                  border: isDemo ? '1px solid rgba(113, 59, 255, 0.28)' : '1px solid rgba(0, 217, 255, 0.18)',
+                  background: 'rgba(7, 27, 61, 0.45)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.borderColor = isDemo ? 'rgba(113, 59, 255, 0.5)' : 'rgba(0, 217, 255, 0.4)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = isDemo ? 'rgba(113, 59, 255, 0.28)' : 'rgba(0, 217, 255, 0.18)';
                 }}
               >
-                {/* Certificate Preview Header */}
+                {/* Certificate Preview Header (Compact 105px) */}
                 <div style={{
-                  height: '150px',
+                  height: '105px',
                   position: 'relative',
-                  backgroundColor: 'rgba(2, 8, 23, 0.9)',
+                  backgroundColor: 'rgba(2, 8, 23, 0.85)',
                   overflow: 'hidden',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
-                }}>
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                  cursor: hasFile ? 'pointer' : 'default'
+                }}
+                onClick={() => hasFile && handleOpenViewModal(cert)}
+                title={hasFile ? 'Click to preview document' : undefined}
+                >
                   {hasFile && !isPdf ? (
                     <img
                       src={cert.image_url}
@@ -634,20 +651,20 @@ export const AdminCertificatesPage = () => {
                       flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      background: 'linear-gradient(135deg, rgba(8, 123, 255, 0.15) 0%, rgba(113, 59, 255, 0.12) 100%)',
-                      gap: '0.4rem'
+                      background: 'linear-gradient(135deg, rgba(8, 123, 255, 0.12) 0%, rgba(113, 59, 255, 0.08) 100%)',
+                      gap: '0.3rem'
                     }}>
                       {isPdf ? (
                         <>
-                          <FileText size={36} color="var(--color-neon-cyan, #00D9FF)" />
-                          <span style={{ fontSize: '0.75rem', color: 'rgba(245, 248, 255, 0.6)', fontFamily: 'var(--font-mono)' }}>
+                          <FileText size={26} color="var(--color-neon-cyan, #00D9FF)" />
+                          <span style={{ fontSize: '0.7rem', color: 'rgba(245, 248, 255, 0.6)', fontFamily: 'var(--font-mono)' }}>
                             PDF Certificate Document
                           </span>
                         </>
                       ) : (
                         <>
-                          <Award size={40} color="var(--color-neon-cyan, #00D9FF)" />
-                          <span style={{ fontSize: '0.75rem', color: 'rgba(245, 248, 255, 0.5)', fontFamily: 'var(--font-mono)' }}>
+                          <Award size={28} color="var(--color-neon-cyan, #00D9FF)" />
+                          <span style={{ fontSize: '0.7rem', color: 'rgba(245, 248, 255, 0.5)', fontFamily: 'var(--font-mono)' }}>
                             Verified Academic Achievement
                           </span>
                         </>
@@ -658,17 +675,21 @@ export const AdminCertificatesPage = () => {
                   {/* Issuer Capsule over Preview */}
                   <div style={{
                     position: 'absolute',
-                    top: '10px',
-                    left: '10px',
-                    background: 'rgba(2, 8, 23, 0.85)',
-                    backdropFilter: 'blur(8px)',
-                    border: '1px solid rgba(0, 217, 255, 0.4)',
+                    top: '8px',
+                    left: '8px',
+                    background: 'rgba(2, 8, 23, 0.88)',
+                    backdropFilter: 'blur(6px)',
+                    border: '1px solid rgba(0, 217, 255, 0.35)',
                     color: '#00D9FF',
-                    padding: '0.2rem 0.65rem',
+                    padding: '0.15rem 0.5rem',
                     borderRadius: '999px',
-                    fontSize: '0.72rem',
+                    fontSize: '0.68rem',
                     fontWeight: 700,
-                    zIndex: 2
+                    zIndex: 2,
+                    maxWidth: '180px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                   }}>
                     {cert.issuer}
                   </div>
@@ -676,60 +697,67 @@ export const AdminCertificatesPage = () => {
                   {cert.credential_id && (
                     <div style={{
                       position: 'absolute',
-                      top: '10px',
-                      right: '10px',
+                      top: '8px',
+                      right: '8px',
                       background: 'rgba(16, 185, 129, 0.2)',
                       border: '1px solid rgba(16, 185, 129, 0.4)',
                       color: '#34D399',
-                      padding: '0.2rem 0.6rem',
+                      padding: '0.15rem 0.45rem',
                       borderRadius: '999px',
-                      fontSize: '0.7rem',
+                      fontSize: '0.65rem',
                       fontWeight: 600,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.3rem',
+                      gap: '0.25rem',
                       zIndex: 2
                     }}>
-                      <ShieldCheck size={12} /> Verified
+                      <ShieldCheck size={11} /> Verified
                     </div>
                   )}
                 </div>
 
-                {/* Card Body */}
-                <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.4rem' }}>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff', margin: 0 }}>
+                {/* Card Body (Compact & Elegant) */}
+                <div style={{ padding: '0.85rem 1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                    <h3 style={{
+                      fontSize: '0.94rem',
+                      fontWeight: 600,
+                      color: '#fff',
+                      margin: 0,
+                      lineHeight: 1.35,
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}>
                       {cert.title}
                     </h3>
-                    <span style={{ fontSize: '0.75rem', color: 'rgba(245, 248, 255, 0.4)', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.35)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
                       #{cert.display_order ?? cert.id}
                     </span>
                   </div>
 
-                  {/* Metadata Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', fontSize: '0.8rem', color: 'rgba(245, 248, 255, 0.6)', marginBottom: '0.75rem' }}>
+                  {/* Issuer & Date Metadata */}
+                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.75rem', color: 'rgba(245, 248, 255, 0.55)', marginBottom: '0.5rem' }}>
+                    <span>{cert.issuer}</span>
                     {cert.issue_date && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                        <Calendar size={13} /> {cert.issue_date}
-                      </span>
-                    )}
-
-                    {cert.credential_id && (
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'rgba(245, 248, 255, 0.5)' }}>
-                        ID: {cert.credential_id}
-                      </span>
+                      <>
+                        <span>•</span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <Calendar size={11} /> {cert.issue_date}
+                        </span>
+                      </>
                     )}
                   </div>
 
                   {cert.description && (
                     <p style={{
-                      fontSize: '0.85rem',
-                      color: 'rgba(245, 248, 255, 0.75)',
-                      lineHeight: 1.5,
-                      marginBottom: '1rem',
-                      flex: 1,
+                      fontSize: '0.78rem',
+                      color: 'rgba(245, 248, 255, 0.65)',
+                      lineHeight: 1.45,
+                      marginBottom: '0.65rem',
                       display: '-webkit-box',
-                      WebkitLineClamp: 3,
+                      WebkitLineClamp: 2,
                       WebkitBoxOrient: 'vertical',
                       overflow: 'hidden'
                     }}>
@@ -737,60 +765,75 @@ export const AdminCertificatesPage = () => {
                     </p>
                   )}
 
-                  {/* Skills Chips */}
-                  {Array.isArray(cert.skills) && cert.skills.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1.25rem' }}>
-                      {cert.skills.map(s => (
+                  {/* Skills Chips (Limit 3 + more) */}
+                  {skills.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '0.85rem', marginTop: 'auto' }}>
+                      {skills.slice(0, 3).map(s => (
                         <span key={s} style={{
-                          background: 'rgba(2, 8, 23, 0.7)',
-                          border: '1px solid rgba(0, 217, 255, 0.2)',
-                          padding: '0.15rem 0.5rem',
-                          borderRadius: '6px',
-                          fontSize: '0.72rem',
+                          background: 'rgba(2, 8, 23, 0.65)',
+                          border: '1px solid rgba(0, 217, 255, 0.18)',
+                          padding: '0.12rem 0.4rem',
+                          borderRadius: '4px',
+                          fontSize: '0.68rem',
                           color: 'rgba(245, 248, 255, 0.85)'
                         }}>
                           {s}
                         </span>
                       ))}
+                      {skills.length > 3 && (
+                        <span style={{
+                          background: 'rgba(8, 123, 255, 0.1)',
+                          border: '1px solid rgba(8, 123, 255, 0.25)',
+                          padding: '0.12rem 0.4rem',
+                          borderRadius: '4px',
+                          fontSize: '0.68rem',
+                          color: 'var(--color-neon-cyan)'
+                        }}>
+                          +{skills.length - 3}
+                        </span>
+                      )}
                     </div>
                   )}
 
-                  {/* Action Buttons Toolbar */}
+                  {/* Action Buttons Toolbar (Compact) */}
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    paddingTop: '0.85rem',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                    paddingTop: '0.65rem',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                     marginTop: 'auto'
                   }}>
-                    <div style={{ display: 'flex', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
                       <button
                         onClick={() => handleOpenViewModal(cert)}
                         className="admin-btn admin-btn-secondary admin-btn-sm"
-                        title="View Details"
+                        style={{ padding: '0.25rem 0.55rem', fontSize: '0.74rem' }}
+                        title="View Details & Mockup"
                       >
-                        <Eye size={14} />
-                        <span style={{ marginLeft: '0.3rem' }}>View</span>
+                        <Eye size={13} />
+                        <span style={{ marginLeft: '0.25rem' }}>View</span>
                       </button>
 
                       <button
                         onClick={() => handleOpenEditModal(cert)}
                         className="admin-btn admin-btn-secondary admin-btn-sm"
+                        style={{ padding: '0.25rem 0.55rem', fontSize: '0.74rem' }}
                         title="Edit Certificate"
                       >
-                        <Edit3 size={14} />
-                        <span style={{ marginLeft: '0.3rem' }}>Edit</span>
+                        <Edit3 size={13} />
+                        <span style={{ marginLeft: '0.25rem' }}>Edit</span>
                       </button>
                     </div>
 
                     <button
                       onClick={() => handleOpenDeleteModal(cert)}
                       className="admin-btn admin-btn-danger admin-btn-sm"
+                      style={{ padding: '0.25rem 0.55rem', fontSize: '0.74rem' }}
                       title="Delete Certificate"
                     >
-                      <Trash2 size={14} />
-                      <span style={{ marginLeft: '0.3rem' }}>Delete</span>
+                      <Trash2 size={13} />
+                      <span style={{ marginLeft: '0.25rem' }}>Delete</span>
                     </button>
                   </div>
                 </div>

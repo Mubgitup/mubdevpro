@@ -206,6 +206,19 @@ class Database {
                 KEY `achievements_order_idx` (`display_order` ASC, `created_at` DESC),
                 KEY `achievements_category_idx` (`category`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+            CREATE TABLE IF NOT EXISTS `mubdev_site_images` (
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `image_key` VARCHAR(80) NOT NULL UNIQUE,
+                `section` VARCHAR(80) NOT NULL,
+                `title` VARCHAR(150) NOT NULL,
+                `image_url` VARCHAR(500) NOT NULL,
+                `aspect_ratio` VARCHAR(20) DEFAULT '1:1',
+                `alt_text` VARCHAR(255) DEFAULT '',
+                `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                KEY `idx_site_images_key` (`image_key`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ");
 
         // Verify administrator account exists
@@ -245,6 +258,12 @@ class Database {
         $achieveCount = (int)$pdo->query("SELECT COUNT(*) FROM `mubdev_achievements`")->fetchColumn();
         if ($achieveCount === 0) {
             self::seedDefaultAchievements($pdo);
+        }
+
+        // Verify and seed site images if table is empty
+        $siteImagesCount = (int)$pdo->query("SELECT COUNT(*) FROM `mubdev_site_images`")->fetchColumn();
+        if ($siteImagesCount === 0) {
+            self::seedDefaultSiteImages($pdo);
         }
     }
 
@@ -353,6 +372,18 @@ class Database {
             );
             CREATE INDEX IF NOT EXISTS achievements_order_idx ON mubdev_achievements(display_order ASC, created_at DESC);
             CREATE INDEX IF NOT EXISTS achievements_category_idx ON mubdev_achievements(category);
+
+            CREATE TABLE IF NOT EXISTS mubdev_site_images (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                image_key TEXT NOT NULL UNIQUE,
+                section TEXT NOT NULL,
+                title TEXT NOT NULL,
+                image_url TEXT NOT NULL,
+                aspect_ratio TEXT DEFAULT '1:1',
+                alt_text TEXT DEFAULT '',
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_site_images_key ON mubdev_site_images(image_key);
         ");
 
         // Ensure default administrator: admin / AdminMubdev2026!
@@ -397,6 +428,12 @@ class Database {
         $achieveCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_achievements")->fetchColumn();
         if ($achieveCount === 0) {
             self::seedDefaultAchievements($pdo);
+        }
+
+        // Seed default site images if empty
+        $siteImagesCount = (int)$pdo->query("SELECT COUNT(*) FROM mubdev_site_images")->fetchColumn();
+        if ($siteImagesCount === 0) {
+            self::seedDefaultSiteImages($pdo);
         }
     }
 
@@ -803,6 +840,62 @@ class Database {
                 ]);
             } catch (Throwable $e) {
                 // Ignore if record already exists
+            }
+        }
+    }
+
+    /**
+     * Seeds initial site images (Hero profile photo, About photo, OpenGraph preview).
+     */
+    private static function seedDefaultSiteImages(PDO $pdo): void {
+        $defaults = [
+            [
+                'id' => 1,
+                'image_key' => 'hero_profile',
+                'section' => 'Hero Section',
+                'title' => 'Profile Photo (Hero Section)',
+                'image_url' => '/src/assets/images/mubdev-hero.jpg',
+                'aspect_ratio' => '4:5',
+                'alt_text' => 'Mubarek Hussein - Hero Portrait'
+            ],
+            [
+                'id' => 2,
+                'image_key' => 'about_photo',
+                'section' => 'About Section',
+                'title' => 'About Section Photo',
+                'image_url' => '/src/assets/images/mubdev-hero.jpg',
+                'aspect_ratio' => '1:1',
+                'alt_text' => 'Mubarek Hussein - About Photo'
+            ],
+            [
+                'id' => 3,
+                'image_key' => 'og_preview',
+                'section' => 'Social & Metadata',
+                'title' => 'Social Share & OpenGraph Banner',
+                'image_url' => '/src/assets/images/mubdev-hero.jpg',
+                'aspect_ratio' => '16:9',
+                'alt_text' => 'Mubdev Portfolio Preview'
+            ]
+        ];
+
+        foreach ($defaults as $d) {
+            try {
+                $sql = self::$activeEngine === 'mysql'
+                    ? "INSERT IGNORE INTO `mubdev_site_images` (`id`, `image_key`, `section`, `title`, `image_url`, `aspect_ratio`, `alt_text`, `updated_at`) VALUES (:id, :key, :section, :title, :url, :ratio, :alt, NOW())"
+                    : "INSERT OR IGNORE INTO mubdev_site_images (id, image_key, section, title, image_url, aspect_ratio, alt_text, updated_at) VALUES (:id, :key, :section, :title, :url, :ratio, :alt, datetime('now'))";
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                    ':id'      => $d['id'],
+                    ':key'     => $d['image_key'],
+                    ':section' => $d['section'],
+                    ':title'   => $d['title'],
+                    ':url'     => $d['image_url'],
+                    ':ratio'   => $d['aspect_ratio'],
+                    ':alt'     => $d['alt_text']
+                ]);
+            } catch (Throwable $e) {
+                // Ignore duplicate errors
             }
         }
     }

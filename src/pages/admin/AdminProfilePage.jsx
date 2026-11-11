@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
-import { User, Save, CheckCircle2, Shield, GraduationCap, Code, Compass, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Save, CheckCircle2, Shield, GraduationCap, Code, Compass, Sparkles, Camera, ArrowRight } from 'lucide-react';
+import { Link } from '../../router/Router';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 import { BRAND_PROFILE, ASSET_PATHS } from '../../data/brandConfig';
+import { api } from '../../services/api';
 
 export const AdminProfilePage = () => {
   const [profile, setProfile] = useState({ ...BRAND_PROFILE });
   const [saved, setSaved] = useState(false);
+  const [heroImage, setHeroImage] = useState(() => {
+    return localStorage.getItem('mubdev_hero_profile') || ASSET_PATHS.heroPortrait;
+  });
+
+  useEffect(() => {
+    if (api?.siteImages?.list) {
+      api.siteImages.list()
+        .then((res) => {
+          const imgUrl = res?.data?.hero_profile?.image_url;
+          if (imgUrl) {
+            setHeroImage(imgUrl);
+            localStorage.setItem('mubdev_hero_profile', imgUrl);
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -162,14 +181,24 @@ export const AdminProfilePage = () => {
               borderRadius: '10px',
               marginBottom: '1rem',
               border: '1px solid rgba(0, 217, 255, 0.3)',
-              boxShadow: '0 0 15px rgba(0, 217, 255, 0.2)'
+              boxShadow: '0 0 15px rgba(0, 217, 255, 0.2)',
+              position: 'relative'
             }}>
               <img
-                src={ASSET_PATHS.heroPortrait}
+                src={heroImage}
                 alt="Mubdev Official Hero"
                 style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }}
               />
             </div>
+
+            <Link
+              to="/admin/images"
+              className="admin-btn admin-btn-secondary admin-btn-sm"
+              style={{ width: '100%', justifyContent: 'center', marginBottom: '1rem', fontSize: '0.76rem' }}
+            >
+              <Camera size={14} />
+              <span style={{ marginLeft: '0.35rem' }}>Crop &amp; Change Photo</span>
+            </Link>
 
             <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>{profile.name}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--color-neon-cyan, #00D9FF)', fontWeight: 600, marginTop: '0.2rem' }}>

@@ -339,3 +339,38 @@ VALUES
   '2026-11-04 16:00:00'
 )
 ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `category` = VALUES(`category`);
+
+-- 7. Seed core website images
+INSERT INTO `mubdev_site_images` (`id`, `image_key`, `section`, `title`, `image_url`, `aspect_ratio`, `alt_text`, `updated_at`)
+VALUES
+(
+  1,
+  'hero_profile',
+  'Hero Section',
+  'Profile Photo (Hero Section)',
+  '/src/assets/images/mubdev-hero.jpg',
+  '4:5',
+  'Mubarek Hussein - Mubdev Software Developer',
+  '2026-11-01 10:00:00'
+),
+(
+  2,
+  'about_photo',
+  'About Section',
+  'About Section Photo',
+  '/src/assets/images/mubdev-hero.jpg',
+  '1:1',
+  'Mubarek Hussein - About Photo',
+  '2026-11-01 10:00:00'
+),
+(
+  3,
+  'og_preview',
+  'Social & Metadata',
+  'Social Share & OpenGraph Banner',
+  '/src/assets/images/mubdev-hero.jpg',
+  '16:9',
+  'Mubdev Developer Portfolio',
+  '2026-11-01 10:00:00'
+)
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`);

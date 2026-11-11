@@ -226,3 +226,4 @@ class Achievement {
         return $stmt->rowCount() > 0;
     }
 }
+

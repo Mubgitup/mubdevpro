@@ -289,60 +289,77 @@ export const AdminAchievementsPage = () => {
         </div>
       )}
 
-      {/* Summary Metrics */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
-        <div className="admin-card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ fontSize: '0.78rem', color: 'rgba(245, 248, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-            Total Achievements
+      {/* Summary Metrics (Compact) */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '0.75rem',
+        marginBottom: '1.25rem'
+      }}>
+        <div className="admin-card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.55)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Total Achievements
+            </div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-neon-cyan, #00D9FF)', marginTop: '0.15rem' }}>
+              {stats.total}
+            </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-neon-cyan)' }}>
-            {stats.total}
-          </div>
+          <Trophy size={20} color="var(--color-neon-cyan, #00D9FF)" />
         </div>
 
-        <div className="admin-card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ fontSize: '0.78rem', color: 'rgba(245, 248, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-            Technical Milestones
+        <div className="admin-card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.55)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Technical Milestones
+            </div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-electric-blue, #087BFF)', marginTop: '0.15rem' }}>
+              {stats.technical}
+            </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#087BFF' }}>
-            {stats.technical}
-          </div>
+          <Award size={20} color="var(--color-electric-blue, #087BFF)" />
         </div>
 
-        <div className="admin-card" style={{ padding: '1rem 1.25rem' }}>
-          <div style={{ fontSize: '0.78rem', color: 'rgba(245, 248, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-            Academic Recognitions
+        <div className="admin-card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(245, 248, 255, 0.55)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Academic Recognitions
+            </div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-violet, #713BFF)', marginTop: '0.15rem' }}>
+              {stats.academic}
+            </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-violet, #713BFF)' }}>
-            {stats.academic}
-          </div>
+          <Sparkles size={20} color="var(--color-violet, #713BFF)" />
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'center' }}>
-        <div style={{ position: 'relative', flex: '1 1 250px' }}>
-          <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(245, 248, 255, 0.4)' }} />
-          <input
-            type="text"
-            className="form-input"
-            style={{ paddingLeft: '36px' }}
-            placeholder="Search achievements by title, organization, or keywords..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+      {/* Filter and Search Bar (Compact) */}
+      <div className="admin-card" style={{ padding: '0.85rem 1rem', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ position: 'relative', flex: '1 1 240px', minWidth: '200px' }}>
+            <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(245, 248, 255, 0.4)' }} />
+            <input
+              type="text"
+              className="form-input"
+              style={{ paddingLeft: '32px', fontSize: '0.85rem', padding: '0.5rem 0.75rem 0.5rem 32px' }}
+              placeholder="Search achievements by title, organization, or keywords..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
 
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {['All', ...CATEGORIES].map((cat) => (
-            <button
-              key={cat}
-              className={`project-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
+          <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            {['All', ...CATEGORIES].map((cat) => (
+              <button
+                key={cat}
+                className={`project-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem' }}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -379,86 +396,180 @@ export const AdminAchievementsPage = () => {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.5rem' }}>
+        /* COMPACT ACHIEVEMENTS GRID (2-3 cards per row on desktop) */
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '1rem'
+        }}>
           {filteredAchievements.map((item) => {
             const highlights = Array.isArray(item.highlights) ? item.highlights : [];
             const link = item.link_url || item.url;
+            const isFeatured = item.featured === true || item.featured === 1 || item.featured === '1';
 
             return (
-              <div key={item.id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div 
+                key={item.id} 
+                className="admin-card" 
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: '0.9rem 1rem',
+                  borderRadius: '11px',
+                  border: isFeatured ? '1px solid rgba(0, 217, 255, 0.35)' : '1px solid rgba(113, 59, 255, 0.22)',
+                  background: 'rgba(7, 27, 61, 0.45)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.borderColor = isFeatured ? 'rgba(0, 217, 255, 0.55)' : 'rgba(113, 59, 255, 0.45)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = isFeatured ? 'rgba(0, 217, 255, 0.35)' : 'rgba(113, 59, 255, 0.22)';
+                }}
+              >
                 <div>
-                  <div className="admin-card-header" style={{ marginBottom: '0.75rem' }}>
-                    <span className="badge badge-violet">
+                  {/* Card Header: Category Badge + Compact Action Buttons */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.65rem'
+                  }}>
+                    <span style={{
+                      display: 'inline-block',
+                      background: 'rgba(113, 59, 255, 0.16)',
+                      border: '1px solid rgba(113, 59, 255, 0.35)',
+                      color: '#C4B5FD',
+                      padding: '0.15rem 0.5rem',
+                      borderRadius: '999px',
+                      fontSize: '0.68rem',
+                      fontWeight: 600,
+                      maxWidth: '170px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
                       {item.category || 'Milestone'}
                     </span>
-                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+
+                    <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
                       <button
                         onClick={() => openViewModal(item)}
                         className="admin-btn admin-btn-secondary admin-btn-sm"
+                        style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem' }}
                         title="View Details"
                       >
-                        <Eye size={14} />
+                        <Eye size={13} />
                       </button>
                       <button
                         onClick={() => openEditModal(item)}
                         className="admin-btn admin-btn-secondary admin-btn-sm"
-                        title="Edit"
+                        style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem' }}
+                        title="Edit Achievement"
                       >
-                        <Edit3 size={14} />
+                        <Edit3 size={13} />
                       </button>
                       <button
                         onClick={() => handleDelete(item.id, item.title)}
                         className="admin-btn admin-btn-danger admin-btn-sm"
+                        style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem' }}
                         title="Delete"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={13} />
                       </button>
                     </div>
                   </div>
 
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', marginBottom: '0.35rem', lineHeight: 1.4 }}>
+                  {/* Title */}
+                  <h3 style={{
+                    fontSize: '0.94rem',
+                    fontWeight: 600,
+                    color: '#fff',
+                    marginBottom: '0.25rem',
+                    lineHeight: 1.35,
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }} title={item.title}>
                     {item.title}
                   </h3>
 
+                  {/* Organization & Date */}
                   {item.organization && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-neon-cyan)', fontSize: '0.82rem', marginBottom: '0.65rem', fontWeight: 600 }}>
-                      <Building size={14} />
-                      <span>{item.organization}</span>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      color: 'var(--color-neon-cyan, #00D9FF)',
+                      fontSize: '0.75rem',
+                      marginBottom: '0.5rem',
+                      fontWeight: 500,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
+                      <Building size={12} style={{ flexShrink: 0 }} />
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.organization}</span>
                       {item.date && (
-                        <span style={{ color: 'rgba(245, 248, 255, 0.45)', fontWeight: 400 }}>
+                        <span style={{ color: 'rgba(245, 248, 255, 0.45)', flexShrink: 0 }}>
                           • {item.date}
                         </span>
                       )}
                     </div>
                   )}
 
-                  <p style={{ fontSize: '0.85rem', color: 'rgba(245, 248, 255, 0.7)', lineHeight: 1.6, marginBottom: '1rem' }}>
+                  {/* Description (Clamped to 2 lines for compact layout) */}
+                  <p style={{
+                    fontSize: '0.78rem',
+                    color: 'rgba(245, 248, 255, 0.65)',
+                    lineHeight: 1.45,
+                    marginBottom: '0.65rem',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>
                     {item.description}
                   </p>
                 </div>
 
+                {/* Footer: Highlights & Links */}
                 <div>
                   {highlights.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: link ? '0.85rem' : '0' }}>
-                      {highlights.map((h) => (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginBottom: link ? '0.5rem' : '0' }}>
+                      {highlights.slice(0, 3).map((h) => (
                         <span
                           key={h}
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '0.25rem',
-                            fontSize: '0.72rem',
-                            color: 'var(--text-secondary)',
-                            background: 'rgba(2, 8, 23, 0.6)',
-                            padding: '0.2rem 0.5rem',
+                            gap: '0.2rem',
+                            fontSize: '0.68rem',
+                            color: 'rgba(245, 248, 255, 0.8)',
+                            background: 'rgba(2, 8, 23, 0.55)',
+                            padding: '0.15rem 0.45rem',
                             borderRadius: '4px',
-                            border: '1px solid rgba(113, 59, 255, 0.25)'
+                            border: '1px solid rgba(113, 59, 255, 0.22)'
                           }}
                         >
-                          <Tag size={10} color="var(--color-violet)" />
+                          <Tag size={9} color="var(--color-violet, #713BFF)" />
                           {h}
                         </span>
                       ))}
+                      {highlights.length > 3 && (
+                        <span style={{
+                          fontSize: '0.65rem',
+                          color: 'rgba(245, 248, 255, 0.5)',
+                          padding: '0.15rem 0.35rem',
+                          alignSelf: 'center'
+                        }}>
+                          +{highlights.length - 3} more
+                        </span>
+                      )}
                     </div>
                   )}
 
@@ -468,10 +579,18 @@ export const AdminAchievementsPage = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="certificate-link-btn"
-                      style={{ color: 'var(--color-violet)', fontSize: '0.78rem' }}
+                      style={{
+                        color: 'var(--color-violet, #A78BFA)',
+                        fontSize: '0.74rem',
+                        marginTop: '0.35rem',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        textDecoration: 'none'
+                      }}
                     >
-                      <ExternalLink size={13} />
-                      <span>View Reference / Link</span>
+                      <ExternalLink size={12} />
+                      <span>View Reference</span>
                     </a>
                   )}
                 </div>

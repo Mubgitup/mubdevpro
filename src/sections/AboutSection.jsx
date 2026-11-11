@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { GlassCard } from '../components/common/GlassCard';
 import { MotionReveal } from '../components/common/MotionReveal';
-import { BRAND_PROFILE } from '../data/brandConfig';
+import { BRAND_PROFILE, ASSET_PATHS } from '../data/brandConfig';
 import { User, BookOpen, Target, Sparkles, Code2, Server } from 'lucide-react';
+import { api } from '../services/api';
 
 export const AboutSection = () => {
+  const [aboutImage, setAboutImage] = useState(() => {
+    return localStorage.getItem('mubdev_about_photo') || ASSET_PATHS.heroPortrait;
+  });
+
+  useEffect(() => {
+    if (api?.siteImages?.list) {
+      api.siteImages.list()
+        .then((res) => {
+          const imgUrl = res?.data?.about_photo?.image_url;
+          if (imgUrl) {
+            setAboutImage(imgUrl);
+            localStorage.setItem('mubdev_about_photo', imgUrl);
+          }
+        })
+        .catch(() => {});
+    }
+
+    const handleStorage = (e) => {
+      if (e.key === 'mubdev_about_photo' && e.newValue) {
+        setAboutImage(e.newValue);
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
   return (
     <section className="section-container section-py" id="about">
       <MotionReveal direction="up" delay={0.1}>
@@ -22,9 +49,26 @@ export const AboutSection = () => {
         <MotionReveal direction="up" delay={0.2}>
           <GlassCard variant="default" glowColor="cyan" className="about-card-left" style={{ height: '100%' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-                <User size={24} color="var(--color-neon-cyan)" />
-                <h3 style={{ fontSize: 'var(--text-2xl)' }}>Who I Am</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.25rem' }}>
+                {aboutImage && (
+                  <div style={{
+                    width: '46px',
+                    height: '46px',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: '2px solid var(--color-neon-cyan)',
+                    boxShadow: '0 0 10px rgba(0, 217, 255, 0.4)',
+                    flexShrink: 0
+                  }}>
+                    <img src={aboutImage} alt={BRAND_PROFILE.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+                <div>
+                  <h3 style={{ fontSize: 'var(--text-2xl)', margin: 0 }}>Who I Am</h3>
+                  <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-neon-cyan)', fontFamily: 'var(--font-mono)' }}>
+                    {BRAND_PROFILE.brand} Profile
+                  </div>
+                </div>
               </div>
 
               <p style={{ lineHeight: 1.7, marginBottom: '1.25rem', fontSize: 'var(--text-base)' }}>

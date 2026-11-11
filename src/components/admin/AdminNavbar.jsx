@@ -12,6 +12,7 @@ const ROUTE_LABELS = {
   '/admin/education': 'Education & Timeline',
   '/admin/certificates': 'Certificates Management',
   '/admin/achievements': 'Achievements Management',
+  '/admin/images': 'Image & Media Management',
   '/admin/social-media': 'Social Media Links',
   '/admin/messages': 'Contact Messages Inbox',
   '/admin/settings': 'System Settings'

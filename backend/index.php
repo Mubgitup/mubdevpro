@@ -242,6 +242,46 @@ try {
         }
     }
 
+    // =========================================================================
+    // MEDIA & SITE IMAGES API ROUTES
+    // =========================================================================
+
+    // Public site images: GET /api/site-images
+    if ($route === '/api/site-images' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/MediaController.php';
+        MediaController::getSiteImages();
+    }
+
+    // Admin media catalog overview: GET /api/admin/media-overview
+    if ($route === '/api/admin/media-overview' && $method === 'GET') {
+        require_once __DIR__ . '/controllers/MediaController.php';
+        MediaController::getMediaOverview();
+    }
+
+    // Universal file / cropped media upload: POST /api/upload-media
+    if ($route === '/api/upload-media' && $method === 'POST') {
+        require_once __DIR__ . '/controllers/MediaController.php';
+        MediaController::uploadMedia();
+    }
+
+    // Direct entity image update: POST /api/admin/update-entity-image
+    if ($route === '/api/admin/update-entity-image' && ($method === 'POST' || $method === 'PATCH' || $method === 'PUT')) {
+        require_once __DIR__ . '/controllers/MediaController.php';
+        MediaController::updateEntityImage();
+    }
+
+    // Site image update/reset: /api/site-images/{key}
+    if (preg_match('#^/api/site-images/([a-zA-Z0-9_\-]+)$#', $route, $matches)) {
+        $key = $matches[1];
+        require_once __DIR__ . '/controllers/MediaController.php';
+
+        if ($method === 'POST' || $method === 'PUT' || $method === 'PATCH') {
+            MediaController::updateSiteImage($key);
+        } elseif ($method === 'DELETE') {
+            MediaController::resetSiteImage($key);
+        }
+    }
+
     // Default 404 handler for unrecognized endpoints
     Response::error("Resource not found: [{$method}] {$route}", null, 404);
 

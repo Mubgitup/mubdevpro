@@ -239,6 +239,31 @@ export const api = {
     delete: (id) => request(`/achievements/${id}`, {
       method: 'DELETE'
     })
+  },
+
+  // Media & Image Management
+  media: {
+    getOverview: () => request('/admin/media-overview'),
+    upload: (formData) => request('/upload-media', {
+      method: 'POST',
+      body: formData
+    }),
+    updateEntityImage: (payload) => request('/admin/update-entity-image', {
+      method: 'POST',
+      body: payload
+    })
+  },
+
+  // Core Site Images (Hero Profile, About Photo, OpenGraph)
+  siteImages: {
+    list: () => request('/site-images'),
+    update: (key, payload) => request(`/site-images/${key}`, {
+      method: 'POST',
+      body: payload
+    }),
+    reset: (key) => request(`/site-images/${key}`, {
+      method: 'DELETE'
+    })
   }
 };
 
