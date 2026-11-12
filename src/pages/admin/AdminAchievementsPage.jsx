@@ -130,7 +130,7 @@ export const AdminAchievementsPage = () => {
     setEditingId(null);
     setFormData({
       ...INITIAL_FORM,
-      display_order: (achievements?.length || 0) + 1
+      display_order: achievements.length + 1
     });
     setNewTagInput('');
     setIsModalOpen(true);
@@ -165,10 +165,11 @@ export const AdminAchievementsPage = () => {
   };
 
   const handleAddTag = () => {
-    if (newTagInput.trim() && !formData.highlights.includes(newTagInput.trim())) {
+    const trimmed = newTagInput.trim();
+    if (trimmed && !formData.highlights.includes(trimmed)) {
       setFormData({
         ...formData,
-        highlights: [...formData.highlights, newTagInput.trim()]
+        highlights: [...formData.highlights, trimmed]
       });
       setNewTagInput('');
     }
@@ -185,6 +186,10 @@ export const AdminAchievementsPage = () => {
     e.preventDefault();
     if (!formData.title.trim()) {
       alert('Achievement title is required');
+      return;
+    }
+    if (!formData.category) {
+      alert('Category is required');
       return;
     }
 
@@ -228,15 +233,16 @@ export const AdminAchievementsPage = () => {
 
   const handleDelete = async (id, title) => {
     if (!window.confirm(`Are you sure you want to delete "${title || 'this achievement'}"?`)) return;
+    const successMsg = 'Achievement removed.';
     try {
       if (api?.achievements?.delete) {
         await api.achievements.delete(id);
+        setFeedback({ type: 'success', message: 'Achievement deleted.' });
       }
       setAchievements(achievements.filter((a) => a.id !== id));
-      setFeedback({ type: 'success', message: 'Achievement deleted.' });
     } catch {
       setAchievements(achievements.filter((a) => a.id !== id));
-      setFeedback({ type: 'success', message: 'Achievement removed.' });
+      setFeedback({ type: 'error', message: successMsg });
     }
     setTimeout(() => setFeedback(null), 3000);
   };
@@ -754,6 +760,7 @@ export const AdminAchievementsPage = () => {
                     className="form-input"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    required
                   >
                     {CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -798,11 +805,13 @@ export const AdminAchievementsPage = () => {
               <div className="form-group">
                 <label className="form-label">Verification / Detail URL</label>
                 <input
-                  type="url"
+                  type="text"
                   className="form-input"
                   value={formData.link_url}
                   onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
                   placeholder="https://..."
+                  pattern="https?://.+"
+                  title="Enter a valid URL starting with http:// or https://"
                 />
               </div>
 

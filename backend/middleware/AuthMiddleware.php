@@ -8,7 +8,10 @@
 class AuthMiddleware {
     public static function authenticate(): array {
         // 1. Check Bearer token in Authorization header
-        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+        if ($authHeader === '') {
+            $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        }
         if ($authHeader === '' && function_exists('getallheaders')) {
             foreach (getallheaders() as $name => $value) {
                 if (strcasecmp($name, 'Authorization') === 0 && is_string($value)) {
