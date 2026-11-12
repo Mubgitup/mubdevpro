@@ -7,25 +7,30 @@ import '../../styles/admin.css';
 
 export const AdminLoginPage = () => {
   const { navigate } = useRouter();
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('AdminMubdev2026!');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // If already authenticated, redirect to /admin
   useEffect(() => {
-    const existingToken = localStorage.getItem('mubdev_token');
-    if (existingToken) {
-      // Optional check or quick redirect
+    let active = true;
+    if (localStorage.getItem('mubdev_token')) {
+      api.auth.me()
+        .then(() => {
+          if (active) navigate('/admin');
+        })
+        .catch((err) => {
+          if (active && err.status !== 401) {
+            setError(`Unable to verify the existing session: ${err.message}`);
+          }
+        });
     }
-  }, []);
 
-  const handleFillDefaults = () => {
-    setUsername('admin');
-    setPassword('AdminMubdev2026!');
-    setError('');
-  };
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -149,37 +154,6 @@ export const AdminLoginPage = () => {
                 autoComplete="current-password"
               />
             </div>
-          </div>
-
-          {/* Quick Credential Helper Pill */}
-          <div style={{
-            background: 'rgba(8, 123, 255, 0.08)',
-            border: '1px dashed rgba(0, 217, 255, 0.3)',
-            borderRadius: '8px',
-            padding: '0.75rem',
-            marginBottom: '1.5rem',
-            fontSize: '0.78rem',
-            color: 'rgba(245, 248, 255, 0.7)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-              <span style={{ fontWeight: 600, color: 'var(--color-neon-cyan, #00D9FF)' }}>Seeded Admin Account:</span>
-              <button 
-                type="button" 
-                onClick={handleFillDefaults}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-neon-cyan, #00D9FF)',
-                  cursor: 'pointer',
-                  fontSize: '0.75rem',
-                  textDecoration: 'underline'
-                }}
-              >
-                Auto-fill
-              </button>
-            </div>
-            <div>Username: <code style={{ color: '#fff', background: 'rgba(0,0,0,0.3)', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>admin</code></div>
-            <div style={{ marginTop: '0.2rem' }}>Password: <code style={{ color: '#fff', background: 'rgba(0,0,0,0.3)', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>AdminMubdev2026!</code></div>
           </div>
 
           <button

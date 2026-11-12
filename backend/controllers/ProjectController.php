@@ -148,15 +148,7 @@ class ProjectController {
      * Administrative catalog: retrieve all projects with search, filter, and pagination.
      */
     public static function listAdmin(): void {
-        // Authenticate if credentials or session are present, but do not hide projects on read-only queries
-        try {
-            $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
-            if (!empty($authHeader) || !empty($_SESSION['admin_user'])) {
-                AuthMiddleware::authenticate();
-            }
-        } catch (Throwable $authEx) {
-            error_log("Admin projects auth notice: " . $authEx->getMessage());
-        }
+        AuthMiddleware::authenticate();
 
         $filters = [
             'search'   => isset($_GET['search']) && $_GET['search'] !== 'undefined' && trim($_GET['search']) !== '' ? trim($_GET['search']) : null,
@@ -196,6 +188,8 @@ class ProjectController {
      * Retrieve complete information for a single project.
      */
     public static function getSingle(int $id): void {
+        AuthMiddleware::authenticate();
+
         $project = Project::findById($id);
 
         if (!$project) {

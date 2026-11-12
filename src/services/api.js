@@ -22,6 +22,7 @@ async function request(endpoint, options = {}) {
 
   const config = {
     ...options,
+    credentials: options.credentials || 'same-origin',
     headers
   };
 
@@ -39,6 +40,11 @@ async function request(endpoint, options = {}) {
     }
 
     if (!response.ok) {
+      if (response.status === 401 && token) {
+        localStorage.removeItem('mubdev_token');
+        window.dispatchEvent(new Event('mubdev:auth-expired'));
+      }
+
       let errorMessage = data.message;
       if (data.errors && data.errors.exception && typeof data.errors.exception === 'string') {
         errorMessage = `${data.message} (${data.errors.exception})`;
